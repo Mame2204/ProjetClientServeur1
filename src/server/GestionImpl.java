@@ -24,15 +24,15 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 	@Override
 	public List<Article> getArticles() {
 		
-	      List<Article> list = new ArrayList<Article>();   
+		 List<Article> list = new ArrayList<Article>();   
 	      
 	      try {
-	            Class.forName("com.mysql.cj.jdbc.Driver");
-	             Connection con;
-	            try {
-	                con = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestion","root","root");
-	                Statement stmt=con.createStatement();
-	                  System.out.println("Connected"); 
+			Class.forName("com.mysql.jdbc.Driver");
+			 Connection con;
+			try {
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion","root","");
+				Statement stmt=con.createStatement();
+		          System.out.println("Connected"); 
 			    
 			      System.out.println("Creating statement..."); 
 			      
@@ -61,7 +61,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-         
+        
 	      return list;     
 	   
 	}
