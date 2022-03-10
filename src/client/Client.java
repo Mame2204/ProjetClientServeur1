@@ -11,7 +11,7 @@ public class Client {
 	   public static void main(String[] args) {  
 	      try { 
 	    	  
-	    	 IGestion g= (IGestion) Naming.lookup("rmi://localhost:1900/gestion");
+	    	 IGestion g= (IGestion) Naming.lookup("rmi://localhost:1820/gestion");
 	         List<Article> list = (List<Article>)g.getArticles();
 	         for (Article s:list) {
 	            
@@ -19,8 +19,7 @@ public class Client {
 	            System.out.println("famille: " + s.getFamille());
 	            System.out.println("prix: " + s.getPrix());
 	            System.out.println("Stock: " + s.getNbStock());
-	           System.out.println("ok2");
-	            
+	            System.out.println("NotOK " );
 	         } 
 	      } catch (Exception e) {
 	         System.err.println("Client exception: " + e.toString());
