@@ -9,9 +9,9 @@ public class Server{
 	      try { 
 	 
 	    	  IGestion g= (IGestion)new GestionImpl();
-	    	  LocateRegistry.createRegistry(1800); 
+	    	  LocateRegistry.createRegistry(1820); 
 	    	  
-	    	  Naming.rebind("rmi://localhost:1800/gestion", g);
+	    	  Naming.rebind("rmi://localhost:1820/gestion", g);
 	    	  System.err.println("Server ready"); 
 	    	  
 	      } catch (Exception e) { 
