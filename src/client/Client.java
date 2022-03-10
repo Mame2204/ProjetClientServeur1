@@ -19,7 +19,8 @@ public class Client {
 	            System.out.println("famille: " + s.getFamille());
 	            System.out.println("prix: " + s.getPrix());
 	            System.out.println("Stock: " + s.getNbStock());
-	           
+	            System.out.println("ok");
+	            
 	         } 
 	      } catch (Exception e) {
 	         System.err.println("Client exception: " + e.toString());
