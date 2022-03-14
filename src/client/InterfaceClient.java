@@ -125,7 +125,7 @@ public class InterfaceClient {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		
+		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(234, 107, 718, 100);
 		frame.getContentPane().add(scrollPane);
