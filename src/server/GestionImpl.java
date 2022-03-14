@@ -6,9 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class GestionImpl extends UnicastRemoteObject implements IGestion {
 
@@ -16,54 +13,75 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Connection con;
+	private Statement stmt;
 
-	protected GestionImpl() throws RemoteException {
+	public GestionImpl() throws RemoteException {
 		super();
-	}
-
-	@Override
-	public List<Article> getArticles() {
-		
-		 List<Article> list = new ArrayList<Article>();   
-	      
-	      try {
+		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			 Connection con;
 			try {
 				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion","root","");
-				Statement stmt=con.createStatement();
-		          System.out.println("Connected"); 
-			    
-			      System.out.println("Creating statement..."); 
-			      
-			      stmt = con.createStatement();  
-			      String sql = "SELECT * FROM article"; 
-			      ResultSet rs = stmt.executeQuery(sql);  
-
-			      while(rs.next()) {  
-			        String reference =rs.getString("ref");
-			     	String famille=rs.getString("famille");
-			    	double prix=rs.getDouble("prix");
-			    	int nbStock=rs.getInt("nbStock");
-			         
-			         Article article = new Article(); 
-			         article.setReference(reference);
-			         article.setFamille(famille);
-			         article.setPrix(prix);
-			         article.setNbStock(nbStock);
-			         list.add(article); 
-			      } 
-			      rs.close(); 
+				stmt=con.createStatement();
+		        System.out.println("Connected"); 
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-	                    
+			}          
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-        
-	      return list;     
-	   
+	}
+
+	@Override
+	public String[][] getArticles() {
+		          String[][] data = new String[2][4]; // [rows][columns]  	    
+			      System.out.println("Creating statement..."); 
+			      try {
+					stmt = con.createStatement();
+					String sql = "SELECT * FROM article"; 
+				      ResultSet rs = stmt.executeQuery(sql);  
+				      System.out.println("des articles");
+				      int i=0;
+				      while(rs.next())  {
+				    	  for(int j=0;j<4;j++) {
+				    		  data[i][j]=rs.getString(j+1);
+				    		  System.out.println(rs.getString(j+1));
+				    	  }
+				    	  i=i+1;
+				      }
+				      rs.close();
+				      stmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}   
+	      return data;      
+	}
+
+	@Override
+	public String[][] getArticle(String r) {
+		String[][] data = new String[3][4]; // [rows][columns]  
+		try {
+			
+			Statement st = con.createStatement();
+			String sq = "SELECT * FROM article where ref='"+r+"'"; 
+			System.out.println("article");
+		    ResultSet rs = st.executeQuery(sq);  
+
+		      int i=0;
+		      while(rs.next())  {
+		    	  for(int j=0;j<4;j++) {
+		    		  data[i][j]=rs.getString(j+1);
+		    		  System.out.println(rs.getString(j+1));
+		    	  }
+		    	  i=i+1;
+		      }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	      //rs.close(); 
+		return data;     
 	}
 
 }
