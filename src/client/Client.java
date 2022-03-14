@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class Client extends JFrame {
-	
+
 	/**
 	 * 
 	 */
@@ -91,4 +91,5 @@ public class Client extends JFrame {
 
 		
 	}
+
 }
