@@ -38,7 +38,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 			      System.out.println("Creating statement..."); 
 			      try {
 					stmt = con.createStatement();
-					String sql = "SELECT * FROM article"; 
+					String sql = "SELECT * FROM article where nbStock >0"; 
 				      ResultSet rs = stmt.executeQuery(sql);  
 				      System.out.println("des articles");
 				      int i=0;
@@ -60,11 +60,11 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 
 	@Override
 	public String[][] getArticle(String r) {
-		String[][] data = new String[3][4]; // [rows][columns]  
+		String[][] data = new String[2][4]; // [rows][columns]  
 		try {
 			
 			Statement st = con.createStatement();
-			String sq = "SELECT * FROM article where ref='"+r+"'"; 
+			String sq = "SELECT * FROM article where ref='"+r+"' or famille like'"+r+"%' and nbStock >0";
 			System.out.println("article");
 		    ResultSet rs = st.executeQuery(sq);  
 

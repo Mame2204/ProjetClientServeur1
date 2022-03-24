@@ -30,6 +30,9 @@ import java.rmi.RemoteException;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import java.awt.ScrollPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class InterfaceClient {
 
@@ -38,6 +41,8 @@ public class InterfaceClient {
 	private JTable table;
 	private JScrollPane scrollPane;
 	private IGestion g;
+	private UnClient client;
+	JLabel bienvenue;
 
 	/**
 	 * Launch the application.
@@ -54,11 +59,16 @@ public class InterfaceClient {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
 	public InterfaceClient() {
+		this.client=new UnClient();
+		initialize();
+	}
+	public InterfaceClient(UnClient c) {
+		this.client=c;
 		initialize();
 	}
 	private void rechercher() {
@@ -72,7 +82,7 @@ public class InterfaceClient {
 			e.printStackTrace();
 		}
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(234, 107, 718, 100);
+		scrollPane.setBounds(240, 164, 718, 100);
 		frame.getContentPane().add(scrollPane);
 		
 	}
@@ -83,20 +93,28 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1900/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 16));
 		frame.setBounds(100, 100, 1213, 608);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(310, 5, 571, 39);
+		panel.setBounds(291, 93, 744, 39);
 		panel.setToolTipText("");
 		frame.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		bienvenue = new JLabel("Bienvenu");
+		bienvenue.setBounds(10, 63, 69, 20);
+		if(client.getPseudo()!=null) {
+			bienvenue.setText("Bienvenue " +client.getPseudo());
+		}
+		frame.getContentPane().add(bienvenue);
 		
 		JLabel search = new JLabel("Rechercher:");
 		search.setVerticalAlignment(SwingConstants.TOP);
@@ -117,6 +135,24 @@ public class InterfaceClient {
 		});
 		panel.add(btnSearch);
 		
+		JButton btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				table = new JTable();
+				table.setBounds(206, 95, 782, 127);
+				String[] column= {"Réference","Famille","Prix","Stock"};
+				try {
+					table = new javax.swing.JTable((String[][])g.getArticles(),column);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				scrollPane = new JScrollPane(table);
+				scrollPane.setBounds(240, 164, 718, 100);
+				frame.getContentPane().add(scrollPane);
+			}
+		});
+		panel.add(btnReset);
+		
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
 		String[] column= {"Réference","Famille","Prix","Stock"};
@@ -127,7 +163,7 @@ public class InterfaceClient {
 		}
 		 
 	    scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(234, 107, 718, 100);
+		scrollPane.setBounds(240, 164, 718, 100);
 		frame.getContentPane().add(scrollPane);
 		
 		JButton btnExit = new JButton("Exit");
@@ -154,6 +190,40 @@ public class InterfaceClient {
 		btnModifierUnArticle.setBounds(638, 313, 185, 29);
 		frame.getContentPane().add(btnModifierUnArticle);
 		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		menuBar.setBackground(Color.CYAN);
+		menuBar.setBounds(0, 0, 1191, 47);
+		frame.getContentPane().add(menuBar);
+		
+		JMenu mnAccueil = new JMenu("Accueil");
+		menuBar.add(mnAccueil);
+		
+		JMenu mnRechercher = new JMenu("Rechercher");
+		menuBar.add(mnRechercher);
+		
+		JMenu mnConnexion = new JMenu("Connexion");
+		mnConnexion.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		menuBar.add(mnConnexion);
+		
+		JMenuItem seconnecter = new JMenuItem("Se connecter");
+		seconnecter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Connexion cn=new Connexion();
+				frame.dispose();
+			}
+		});
+		mnConnexion.add(seconnecter);
+		
+		
+         frame.setVisible(true);
 		
 //		frame = new JFrame();
 //		frame.setBounds(100, 100, 1213, 608);
