@@ -141,11 +141,11 @@ public class InterfaceClient {
 				table = new JTable();
 				table.setBounds(206, 95, 782, 127);
 				String[] column= {"Réference","Famille","Prix","Stock"};
-				try {
-					table = new javax.swing.JTable((String[][])g.getArticles(),column);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					table = new javax.swing.JTable((String[][])g.getArticles(),column);
+//				} catch (RemoteException e) {
+//					e.printStackTrace();
+//				}
 				scrollPane = new JScrollPane(table);
 				scrollPane.setBounds(240, 164, 718, 100);
 				frame.getContentPane().add(scrollPane);
@@ -156,11 +156,11 @@ public class InterfaceClient {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
 		String[] column= {"Réference","Famille","Prix","Stock"};
-		try {
-			table = new javax.swing.JTable((String[][])g.getArticles(),column);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			table = new javax.swing.JTable((String[][])g.getArticles(),column);
+//		} catch (RemoteException e) {
+//			e.printStackTrace();
+//		}
 		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 100);
@@ -199,28 +199,19 @@ public class InterfaceClient {
 		JMenu mnAccueil = new JMenu("Accueil");
 		menuBar.add(mnAccueil);
 		
-		JMenu mnRechercher = new JMenu("Rechercher");
-		menuBar.add(mnRechercher);
+		JMenu mnCaisse = new JMenu("Caisse");
+		menuBar.add(mnCaisse);
 		
-		JMenu mnConnexion = new JMenu("Connexion");
-		mnConnexion.addActionListener(new ActionListener() {
+		JMenuItem mntmAcheter = new JMenuItem("Acheter");
+		mnCaisse.add(mntmAcheter);
+		mntmAcheter.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
+				// TODO Auto-generated method stub
+				
 			}
 		});
-		menuBar.add(mnConnexion);
-		
-		JMenuItem seconnecter = new JMenuItem("Se connecter");
-		seconnecter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Connexion cn=new Connexion();
-				frame.dispose();
-			}
-		});
-		mnConnexion.add(seconnecter);
 		
 		
          frame.setVisible(true);
