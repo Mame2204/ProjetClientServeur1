@@ -60,15 +60,22 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 
 	@Override
 	public String[][] getArticle(String r) {
-		String[][] data = new String[2][4]; // [rows][columns]  
+	    //String[][] data = null; 
+	    String[][] data = new String[3][4]; // [rows][columns]  
 		try {
 			
 			Statement st = con.createStatement();
-			String sq = "SELECT * FROM article where ref='"+r+"' or famille like'"+r+"%' and nbStock >0";
+			String sq = "SELECT * from gestion.article where ref='"+r+"' or famille like'"+r+"%' and nbStock >0";
 			System.out.println("article");
-		    ResultSet rs = st.executeQuery(sq);  
+		    ResultSet rs = st.executeQuery(sq); 
+		    //int rowcount = rs.getRow(); 
+            //System.out.println("Row count = "+rowcount);
+		    //data = new String[rs.getRow()][4]; // [rows][columns] 
 
 		      int i=0;
+              /*
+               * if(!rs.next()) { System.out.println("VIDE"); }
+               */
 		      while(rs.next())  {
 		    	  for(int j=0;j<4;j++) {
 		    		  data[i][j]=rs.getString(j+1);

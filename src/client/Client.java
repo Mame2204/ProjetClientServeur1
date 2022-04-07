@@ -62,7 +62,7 @@ public class Client extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			
-		String[] column= {"Réference","Famille","Prix","Stock"};
+		String[] column= {"Reference","Famille","Prix","Stock"};
 
 		try {
 			jt1 = new javax.swing.JTable((String[][])g.getArticles(),column);

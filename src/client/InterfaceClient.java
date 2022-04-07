@@ -74,7 +74,7 @@ public class InterfaceClient {
 	private void rechercher() {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"Réference","Famille","Prix","Stock"};
+		String[] column= {"Rï¿½ference","Famille","Prix","Stock"};
 		String s=txtSearch.getText();
 		try {
 			table = new javax.swing.JTable((String[][])g.getArticle(s),column);
@@ -109,7 +109,7 @@ public class InterfaceClient {
 		frame.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		bienvenue = new JLabel("Bienvenu");
+		bienvenue = new JLabel("Bienvenue");
 		bienvenue.setBounds(10, 63, 69, 20);
 		if(client.getPseudo()!=null) {
 			bienvenue.setText("Bienvenue " +client.getPseudo());
@@ -140,7 +140,7 @@ public class InterfaceClient {
 			public void actionPerformed(ActionEvent arg0) {
 				table = new JTable();
 				table.setBounds(206, 95, 782, 127);
-				String[] column= {"Réference","Famille","Prix","Stock"};
+				String[] column= {"Reference","Famille","Prix","Stock"};
 //				try {
 //					table = new javax.swing.JTable((String[][])g.getArticles(),column);
 //				} catch (RemoteException e) {
@@ -155,12 +155,11 @@ public class InterfaceClient {
 		
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"Réference","Famille","Prix","Stock"};
-//		try {
-//			table = new javax.swing.JTable((String[][])g.getArticles(),column);
-//		} catch (RemoteException e) {
-//			e.printStackTrace();
-//		}
+		String[] column= {"Reference","Famille","Prix","Stock"};
+        /*
+         * try { table = new javax.swing.JTable((String[][])g.getArticles(),column); }
+         * catch (RemoteException e) { e.printStackTrace(); }
+         */
 		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 100);
