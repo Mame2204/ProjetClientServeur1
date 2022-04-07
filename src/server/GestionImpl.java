@@ -34,7 +34,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 
 	@Override
 	public String[][] getArticles() {
-		          String[][] data = new String[2][4]; // [rows][columns]  	    
+		          String[][] data = new String[3][4]; // [rows][columns]  	    
 			      System.out.println("Creating statement..."); 
 			      try {
 					stmt = con.createStatement();

@@ -93,7 +93,7 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1900/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -141,11 +141,11 @@ public class InterfaceClient {
 				table = new JTable();
 				table.setBounds(206, 95, 782, 127);
 				String[] column= {"Réference","Famille","Prix","Stock"};
-//				try {
-//					table = new javax.swing.JTable((String[][])g.getArticles(),column);
-//				} catch (RemoteException e) {
-//					e.printStackTrace();
-//				}
+				try {
+					table = new javax.swing.JTable((String[][])g.getArticles(),column);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 				scrollPane = new JScrollPane(table);
 				scrollPane.setBounds(240, 164, 718, 100);
 				frame.getContentPane().add(scrollPane);
@@ -156,11 +156,11 @@ public class InterfaceClient {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
 		String[] column= {"Réference","Famille","Prix","Stock"};
-//		try {
-//			table = new javax.swing.JTable((String[][])g.getArticles(),column);
-//		} catch (RemoteException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			table = new javax.swing.JTable((String[][])g.getArticles(),column);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 100);
@@ -208,7 +208,8 @@ public class InterfaceClient {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				Achat achat=new Achat();
+				
 				
 			}
 		});

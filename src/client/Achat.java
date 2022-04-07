@@ -181,6 +181,7 @@ public class Achat {
 		});
 		btnPayer.setBounds(353, 367, 115, 29);
 		frame.getContentPane().add(btnPayer);
+		frame.setVisible(true);
 		
 	}
 	
