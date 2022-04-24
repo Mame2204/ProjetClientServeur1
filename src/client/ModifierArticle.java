@@ -49,9 +49,7 @@ public class ModifierArticle {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	
 	private void initialize() {
 		try {
 			g=new GestionImpl();
