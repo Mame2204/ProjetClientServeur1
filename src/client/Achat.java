@@ -44,6 +44,7 @@ public class Achat {
 	/**
 	 * Launch the application.
 	 */
+	//test
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -190,7 +191,7 @@ public class Achat {
 			new Object[][] {
 			},
 			new String[] {
-				"Référence", "Famille", "Prix", "Quantité"
+				"Rï¿½fï¿½rence", "Famille", "Prix", "Quantitï¿½"
 >>>>>>> branch 'master' of https://github.com/Mame2204/ProjetClientServeur1
 			}
 		));
