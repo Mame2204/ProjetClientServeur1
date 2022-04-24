@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+<<<<<<< HEAD
 public class Achat { 
 
 	private JFrame frame;
@@ -108,6 +109,89 @@ public class Achat {
 			},
 			new String[] {
 				"Rï¿½fï¿½rence", "Famille", "Prix", "Quantitï¿½"
+=======
+public class Achat {
+
+	private JFrame frame;
+	private JTable tlisteArticles;
+	private JScrollPane scrollPane;
+	private JTextField txtRef;
+	private JTextField txtFamille;
+	private JTextField txtPrix;
+	private JTextField txtQuantite;
+	private IGestion g;
+	private double montant;
+	ArrayList<Article> listeArticles=new ArrayList<Article>();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Achat window = new Achat();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Achat() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		try {
+			g=new GestionImpl();
+			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		frame = new JFrame();
+		frame.setBounds(100, 100, 946, 593);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		this.montant=0.0;
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		menuBar.setBackground(Color.CYAN);
+		menuBar.setBounds(0, 0, 1191, 47);
+		frame.getContentPane().add(menuBar);
+		
+		JMenu mnAccueil = new JMenu("Accueil");
+		menuBar.add(mnAccueil);
+		
+		JMenu mnCaisse = new JMenu("Caisse");
+		menuBar.add(mnCaisse);
+		
+		JMenuItem mntmAcheter = new JMenuItem("Acheter");
+		mnCaisse.add(mntmAcheter);
+		mntmAcheter.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		tlisteArticles = new JTable();
+		tlisteArticles.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Référence", "Famille", "Prix", "Quantité"
+>>>>>>> branch 'master' of https://github.com/Mame2204/ProjetClientServeur1
 			}
 		));
 		tlisteArticles.setBounds(598, 100, 1, 1);
