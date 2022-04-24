@@ -10,7 +10,7 @@ public class Server{
 
     public static void main (String[] args) {
         try { 
-            
+            //test
              IGestion g= (IGestion)new GestionImpl();
              LocateRegistry.createRegistry(1940); 
              
