@@ -2,10 +2,13 @@ package server;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
+import server.GestionImpl;
+import server.IGestion;
+
 
 public class Server{
 
-    public static void main(String args[]) { 
+    public static void main (String[] args) {
         try { 
             
              IGestion g= (IGestion)new GestionImpl();

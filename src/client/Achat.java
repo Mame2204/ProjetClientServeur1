@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-<<<<<<< HEAD
 public class Achat { 
 
 	private JFrame frame;
@@ -44,7 +43,6 @@ public class Achat {
 	/**
 	 * Launch the application.
 	 */
-	//test
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
