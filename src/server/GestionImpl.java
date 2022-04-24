@@ -24,7 +24,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             try {
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion","root","");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestion","root","root");
                 stmt=con.createStatement();
                 System.out.println("Connected"); 
             } catch (SQLException e) {
