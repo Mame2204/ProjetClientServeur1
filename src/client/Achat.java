@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class Achat {
+public class Achat { 
 
 	private JFrame frame;
 	private JTable tlisteArticles;
