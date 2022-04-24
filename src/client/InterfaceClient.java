@@ -93,7 +93,7 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1900/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -176,7 +176,7 @@ public class InterfaceClient {
 					System.exit(0);;
 				}
 				btnExit.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnExit.setBounds(39, 327, 120, 23);
+				btnExit.setBounds(369, 313, 115, 29);
 			}
 		});
 		btnExit.setBounds(369, 313, 115, 29);
@@ -185,6 +185,8 @@ public class InterfaceClient {
 		JButton btnModifierUnArticle = new JButton("Modifier un article");
 		btnModifierUnArticle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ModifierArticle m=new ModifierArticle();
+				frame.setVisible(false);
 			}
 		});
 		btnModifierUnArticle.setBounds(638, 313, 185, 29);
@@ -197,6 +199,15 @@ public class InterfaceClient {
 		frame.getContentPane().add(menuBar);
 		
 		JMenu mnAccueil = new JMenu("Accueil");
+		JMenuItem mntmAccueil = new JMenuItem("Retour Accueil");
+		mnAccueil.add(mntmAccueil);
+		mntmAccueil.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InterfaceClient home=new InterfaceClient();
+			}
+		});
 		menuBar.add(mnAccueil);
 		
 		JMenu mnCaisse = new JMenu("Caisse");
@@ -209,6 +220,7 @@ public class InterfaceClient {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Achat achat=new Achat();
+				frame.setVisible(false);
 				
 				
 			}

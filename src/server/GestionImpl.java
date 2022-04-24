@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +16,9 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 	private static final long serialVersionUID = 1L;
 	private Connection con;
 	private Statement stmt;
-
+	private PreparedStatement pstmt;
+	private int numUpd;
+	
 	public GestionImpl() throws RemoteException {
 		super();
 		try {
@@ -82,6 +85,23 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
 		}  
 	      //rs.close(); 
 		return data;     
+	}
+
+	@Override
+	public boolean setArticle(Article a) throws RemoteException {
+		try {
+			pstmt=con.prepareStatement("UPDATE article set famille='"+a.getFamille()+"',prix="+a.getPrix()+" ,nbStock=" +a.getNbStock()+" where ref='"+a.getReference()+"'+");
+			numUpd = pstmt.executeUpdate();
+			System.out.println("article: "+a.getFamille()+" "+a.getPrix()+" "+a.getNbStock());
+			numUpd = pstmt.executeUpdate();
+			pstmt.close(); 
+		    return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	      //rs.close(); 
+		return false;     
 	}
 
 }

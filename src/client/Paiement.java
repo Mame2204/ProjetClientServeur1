@@ -102,5 +102,7 @@ public class Paiement {
 		bg.add(rdbtEspece);
 		bg.add(rdbtCheque);
 		
+		frame.setVisible(true);
+		
 	}
 }
