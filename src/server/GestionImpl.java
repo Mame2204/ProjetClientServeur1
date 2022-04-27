@@ -164,7 +164,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         return false;     
     }
     
-    
     /*
      * @Override public boolean setArticle(Article a) throws RemoteException { try {
      * stmt = con.createStatement(); String sql =

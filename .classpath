@@ -7,14 +7,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< HEAD
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="img"/>
-	<classpathentry kind="lib" path="/Users/mariamekaba/Desktop/MASTERM1MIAGE/Architecture Client Serveur/mysql-connector-java-8.0.25/mysql-connector-java-8.0.25.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-=======
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry exported="true" kind="lib" path="/Users/mariamekaba/Desktop/MASTERM1MIAGE/Architecture Client Serveur/mysql-connector-java-8.0.25/mysql-connector-java-8.0.25.jar"/>
->>>>>>> branch 'master' of https://github.com/Mame2204/ProjetClientServeur1.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>
