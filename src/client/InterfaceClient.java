@@ -74,7 +74,7 @@ public class InterfaceClient {
 	private void rechercher() {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"R�ference","Famille","Prix","Stock"};
+		String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
 		String s=txtSearch.getText();
 		try {
 			table = new javax.swing.JTable((String[][])g.getArticle(s),column);
@@ -93,7 +93,7 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -140,12 +140,12 @@ public class InterfaceClient {
 			public void actionPerformed(ActionEvent arg0) {
 				table = new JTable();
 				table.setBounds(206, 95, 782, 127);
-				String[] column= {"Reference","Famille","Prix","Stock"};
-//				try {
-//					table = new javax.swing.JTable((String[][])g.getArticles(),column);
-//				} catch (RemoteException e) {
-//					e.printStackTrace();
-//				}
+				String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
+				try {
+					table = new javax.swing.JTable((String[][])g.getArticles(),column);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 				scrollPane = new JScrollPane(table);
 				scrollPane.setBounds(240, 164, 718, 100);
 				frame.getContentPane().add(scrollPane);
@@ -155,11 +155,12 @@ public class InterfaceClient {
 		
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"Reference","Famille","Prix","Stock"};
-        /*
-         * try { table = new javax.swing.JTable((String[][])g.getArticles(),column); }
-         * catch (RemoteException e) { e.printStackTrace(); }
-         */
+		String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
+		try {
+			table = new javax.swing.JTable((String[][])g.getArticles(),column);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 100);
@@ -170,24 +171,27 @@ public class InterfaceClient {
 			public void actionPerformed(ActionEvent e) {
 				Component frame = null;
 				//Test frame=new Test();
-				int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quittter ?", "confirm", JOptionPane.YES_NO_OPTION );
+				int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
 				if(reponse==JOptionPane.YES_OPTION) {
 					System.exit(0);;
 				}
 				btnExit.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnExit.setBounds(39, 327, 120, 23);
+				btnExit.setBounds(369, 313, 115, 29);
 			}
 		});
 		btnExit.setBounds(369, 313, 115, 29);
 		frame.getContentPane().add(btnExit);
 		
-		JButton btnModifierUnArticle = new JButton("Modifier un article");
-		btnModifierUnArticle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnModifierUnArticle.setBounds(638, 313, 185, 29);
-		frame.getContentPane().add(btnModifierUnArticle);
+        /*
+         * JButton btnModifierUnArticle = new JButton("Modifier un article");
+         * btnModifierUnArticle.addActionListener(new ActionListener() { public void
+         * actionPerformed(ActionEvent e) { ModifierArticle m=new ModifierArticle();
+         * frame.setVisible(false); } });
+         */
+        /*
+         * btnModifierUnArticle.setBounds(638, 313, 185, 29);
+         * frame.getContentPane().add(btnModifierUnArticle);
+         */
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -196,7 +200,17 @@ public class InterfaceClient {
 		frame.getContentPane().add(menuBar);
 		
 		JMenu mnAccueil = new JMenu("Accueil");
+		JMenuItem mntmAccueil = new JMenuItem("Retour Accueil");
+		mnAccueil.add(mntmAccueil);
+		mntmAccueil.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InterfaceClient home=new InterfaceClient();
+			}
+		});
 		menuBar.add(mnAccueil);
+		
 		
 		JMenu mnCaisse = new JMenu("Caisse");
 		menuBar.add(mnCaisse);
@@ -207,10 +221,23 @@ public class InterfaceClient {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				Achat achat=new Achat();
+				frame.setVisible(false);
 			}
 		});
+		
+		JMenu mnStock = new JMenu("Gestion de Stock");
+		menuBar.add(mnStock);
+        JMenuItem mntmStock = new JMenuItem("Ajout de stock");
+        mnStock.add(mntmStock);
+        mntmStock.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ModifierArticle mdifArt=new ModifierArticle();
+                frame.setVisible(false);
+            }
+        });
 		
 		
          frame.setVisible(true);

@@ -2,7 +2,7 @@ package server;
 
 import java.io.Serializable;
 
-public class Article implements Serializable{
+public class Article implements Serializable {
 	
 	private String reference;
 	private String famille;
@@ -76,8 +76,5 @@ public class Article implements Serializable{
 	public void setNbStock(int nbStock) {
 		this.nbStock = nbStock;
 	}
-	
-	
-	
 
 }

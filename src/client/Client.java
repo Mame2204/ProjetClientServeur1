@@ -62,7 +62,7 @@ public class Client extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			
-		String[] column= {"Reference","Famille","Prix","Stock"};
+		String[] column= {"R�ference","Famille","Prix","Stock"};
 
 		try {
 			jt1 = new javax.swing.JTable((String[][])g.getArticles(),column);
@@ -78,7 +78,7 @@ public class Client extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					Component frame = null;
 					//Test frame=new Test();
-					int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quittter ?", "confirm", JOptionPane.YES_NO_OPTION );
+					int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
 					if(reponse==JOptionPane.YES_OPTION) {
 						System.exit(0);;
 					}

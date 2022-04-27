@@ -5,8 +5,17 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -15,15 +24,19 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import server.Article;
 import server.GestionImpl;
 import server.IGestion;
 
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
-public class Achat {
+public class Achat { 
 
 	private JFrame frame;
 	private JTable tlisteArticles;
@@ -33,8 +46,19 @@ public class Achat {
 	private JTextField txtPrix;
 	private JTextField txtQuantite;
 	private IGestion g;
+	private double montant;
+	static  ArrayList<Article> listeArticles = new ArrayList<Article>();
+	
+	public static ArrayList<Article> getListeArticles() {
+	        return listeArticles;
+	    }
+	
 
-	/**
+    public static void setListeArticles(ArrayList<Article> listeArticles) {
+        Achat.listeArticles = listeArticles;
+    }
+
+    /**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -63,14 +87,15 @@ public class Achat {
 	private void initialize() {
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		frame = new JFrame();
-		frame.setBounds(100, 100, 946, 468);
+		frame.setBounds(100, 100, 946, 593);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		this.montant=0.0;
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -84,7 +109,7 @@ public class Achat {
 		JMenu mnCaisse = new JMenu("Caisse");
 		menuBar.add(mnCaisse);
 		
-		JMenuItem mntmAcheter = new JMenuItem("Acheter");
+		JMenuItem mntmAcheter = new JMenuItem("Achat");
 		mnCaisse.add(mntmAcheter);
 		mntmAcheter.addActionListener(new ActionListener() {
 
@@ -100,18 +125,18 @@ public class Achat {
 			new Object[][] {
 			},
 			new String[] {
-				"Référence", "Famille", "Prix", "Quantité"
+				"Rï¿½fï¿½rence", "Famille", "Prix", "Quantitï¿½"
 			}
 		));
 		tlisteArticles.setBounds(598, 100, 1, 1);
 		
 		scrollPane = new JScrollPane(tlisteArticles);
-		scrollPane.setBounds(472, 95, 402, 256);
+		scrollPane.setBounds(507, 93, 402, 284);
 		frame.getContentPane().add(scrollPane);
 		
-		JLabel lblListe = new JLabel("Liste des articles \u00E0 payer");
+		JLabel lblListe = new JLabel("Panier");
 		lblListe.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblListe.setBounds(472, 59, 254, 20);
+		lblListe.setBounds(507, 57, 254, 20);
 		frame.getContentPane().add(lblListe);
 		
 		JLabel lblRef = new JLabel("Reference :");
@@ -119,7 +144,7 @@ public class Achat {
 		frame.getContentPane().add(lblRef);
 		
 		txtRef = new JTextField();
-		txtRef.setBounds(119, 90, 146, 26);
+		txtRef.setBounds(165, 95, 146, 35);
 		frame.getContentPane().add(txtRef);
 		txtRef.setColumns(10);
 		
@@ -129,7 +154,7 @@ public class Achat {
 						rechercher();
 			}
 		});
-		btnchercher.setBounds(280, 89, 101, 29);
+		btnchercher.setBounds(345, 95, 101, 29);
 		frame.getContentPane().add(btnchercher);
 		
 		JLabel lblNomDeFamille = new JLabel("Nom de famille :");
@@ -137,7 +162,7 @@ public class Achat {
 		frame.getContentPane().add(lblNomDeFamille);
 		
 		txtFamille = new JTextField();
-		txtFamille.setBounds(167, 149, 193, 26);
+		txtFamille.setBounds(167, 149, 193, 35);
 		frame.getContentPane().add(txtFamille);
 		txtFamille.setColumns(10);
 		
@@ -146,7 +171,7 @@ public class Achat {
 		frame.getContentPane().add(lblPrix);
 		
 		txtPrix = new JTextField();
-		txtPrix.setBounds(91, 212, 146, 26);
+		txtPrix.setBounds(165, 212, 146, 35);
 		frame.getContentPane().add(txtPrix);
 		txtPrix.setColumns(10);
 		
@@ -154,51 +179,101 @@ public class Achat {
 		lblQuantit.setBounds(28, 274, 80, 20);
 		frame.getContentPane().add(lblQuantit);
 		
-		txtQuantite = new JTextField();
-		txtQuantite.setBounds(119, 271, 146, 26);
-		frame.getContentPane().add(txtQuantite);
-		txtQuantite.setColumns(10);
+//		txtQuantite = new JTextField();
+//		txtQuantite.setBounds(165, 271, 146, 35);
+//		frame.getContentPane().add(txtQuantite);
+//		txtQuantite.setColumns(10);
 		
-		JButton btnAjouter = new JButton("Ajouter");
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(0, 0, 50, 1));
+		spinner.setBounds(165, 271, 146, 35);
+		frame.getContentPane().add(spinner);
+		
+		JLabel label = new JLabel("0.0");
+		label.setBounds(588, 402, 69, 20);
+		frame.getContentPane().add(label);
+		
+		JButton btnAjouter = new JButton("Ajouter au panier");
 		btnAjouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				 DefaultTableModel MonModel = (DefaultTableModel)tlisteArticles.getModel();
-				 MonModel.addRow(new Object[] {txtRef.getText(),txtFamille.getText(),txtPrix.getText(),txtQuantite.getText()});
+				 MonModel.addRow(new Object[] {txtRef.getText(),txtFamille.getText(),txtPrix.getText(),spinner.getValue()});
+				 listeArticles.add(new Article(txtRef.getText(),txtFamille.getText(),Double.parseDouble(txtPrix.getText()),(int)spinner.getValue()));
+				 montant=montant+Double.parseDouble(txtPrix.getText())* (int)spinner.getValue();
+				 label.setText(String.valueOf(montant));
+				 
 				 txtRef.setText("");
 				 txtFamille.setText("");
 				 txtPrix.setText("");
-				 txtQuantite.setText("");
+				 spinner.setValue(0);;
 			}
 		});
-		btnAjouter.setBounds(150, 328, 115, 29);
+		btnAjouter.setBounds(161, 398, 166, 29);
 		frame.getContentPane().add(btnAjouter);
 		
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			    System.out.print(listeArticles.size()+"fonctionecri");
+				Paiement p=new Paiement();
+				frame.setVisible(false);
 			}
 		});
-		btnPayer.setBounds(353, 367, 115, 29);
+		
+		btnPayer.setBounds(362, 492, 115, 29);
 		frame.getContentPane().add(btnPayer);
+		
+		JLabel lblTotal = new JLabel("Total :");
+		lblTotal.setBounds(472, 395, 69, 35);
+		frame.getContentPane().add(lblTotal);
+		
+		frame.setVisible(true);
 		
 	}
 	
 	private void rechercher() {
-		
 		String[][] table = null;
 		String s=txtRef.getText();
 		try {
-			 table = ((String[][])g.getArticle(s));
+			 table = ((String[][])g.rechArticle(s));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		
-		for(int i=0; i<5;i++) {
-			 txtRef.setText(""+table[0][0]);
-			 txtFamille.setText(""+table[0][1]);
-			 txtPrix.setText(""+table[0][2]);
+		//System.out.print(table.equals(null));
+		if (table[0][0] == null) {
+		    System.out.print("Pas de stock necessaire pour cet achat");
+        JOptionPane.showMessageDialog(null,
+                "Pas de stock necessaire pour cet achat",
+                "Avertissement",
+                JOptionPane.WARNING_MESSAGE);
+		} else {
+    		for(int i=0; i<5;i++) {
+    			 txtRef.setText(""+table[0][0]);
+    			 txtFamille.setText(""+table[0][1]);
+    			 txtPrix.setText(""+table[0][2]);
+    		}
 		}
 		
 	}
+	
+        public void ecrireTicketDeCaisse() {
+            Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv");
+            System.out.print(listeArticles.size()+"fonctionecri");
+            //Path chemin = Paths.get("/Users/mariamekaba/Desktop/MASTERM1MIAGE/Architecture Client Serveur/Facturation.csv");
+            for(int i=0; i<listeArticles.size();i++) {
+                Article a = (Article)listeArticles.get(i);
+                    String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+                    String s = dateDuJour +", MK, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
+                    byte[] data = s.getBytes();
+                    OutputStream output = null; 
+                    try { 
+                        output = new BufferedOutputStream(Files.newOutputStream(chemin, StandardOpenOption.APPEND)); 
+                        output.write(data);
+                        output.flush();
+                        output.close();
+                    } catch (Exception e) { System.out.println("Message " + e); }
+           }
+             
+        }
+	
 }
