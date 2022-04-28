@@ -15,6 +15,10 @@ public interface IGestion extends Remote{
 	
 	public String[][] rechArticle(String r) throws RemoteException;
 
-    boolean createFacture(Facture F) throws RemoteException;
+    boolean createFacture() throws RemoteException;
+    
+    public int getReference() throws RemoteException;
+
+    boolean createFactureArticle() throws RemoteException;
 	
 }

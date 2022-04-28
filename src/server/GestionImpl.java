@@ -7,6 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import client.Achat;
+import client.PaiementCB;
 
 public class GestionImpl extends UnicastRemoteObject implements IGestion {
 
@@ -16,6 +21,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     private static final long serialVersionUID = 1L;
     private Connection con;
     private Statement stmt;
+    private Statement stmt1;
     private PreparedStatement pstmt;
     private int numUpd;
     
@@ -148,20 +154,83 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     
     
     @Override
-    public boolean createFacture(Facture F) throws RemoteException {
+    public boolean createFacture() throws RemoteException {
         try {
+            double montant=0.0;
             stmt = con.createStatement();
-            //String sql = "UPDATE article set famille='"+a.getFamille()+"',prix="+a.getPrix()+" ,nbStock=" +a.getNbStock()+" where ref='"+a.getReference()+"'";
-            String sql = "INSERT into facture values("+F.getDate()+","+F.getModePayement()+","+F.getMontant()+")";
-            String sql1 = "INSERT into facture_article values()";
-            stmt.executeUpdate(sql);
+            //Statement stmt1 = con.createStatement();
+            for(int i=0; i<Achat.getListeArticles().size();i++) {
+                System.out.print("New Liste"+Achat.getListeArticles().size());
+                Article a = (Article)Achat.getListeArticles().get(i);
+                montant = montant+a.getPrix()*a.getNbStock();
+                String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+                String s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
+                String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
+                stmt.executeUpdate(sql);
+                //String recupRefFact="SELECT max(ref) from facture";
+                //stmt.executeQuery(recupRefFact);
+                
+                /*
+                 * int ref=getReference(); String sql1 =
+                 * "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.
+                 * getNbStock()+")"; stmt.executeUpdate(sql1);
+                 */
+                 
+            }
             stmt.close(); 
-            return true;
+            //stmt1.close(); 
+            //return true;
+            
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }  
-        return false;     
+        return true;     
+    }
+    @Override
+    public boolean createFactureArticle() throws RemoteException {
+        try {
+            stmt1 = con.createStatement();
+            //Statement stmt1 = con.createStatement();
+            for(int i=0; i<Achat.getListeArticles().size();i++) {
+                System.out.print("New Liste"+Achat.getListeArticles().size());
+                Article a = (Article)Achat.getListeArticles().get(i);
+                int ref=getReference(); 
+                String sql1 = "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.getNbStock()+")"; 
+                stmt1.executeUpdate(sql1);
+            }
+            stmt1.close(); 
+            //stmt1.close(); 
+            //return true;
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        return true;     
+    }
+
+    @Override
+    public int getReference() {
+        int ref=0;
+        try {
+            stmt = con.createStatement();
+            String sql ="SELECT max(ref) from facture";
+              ResultSet rs = stmt.executeQuery(sql);  
+              System.out.println("des articles");
+              int i=0;
+              while(rs.next())  {
+                      ref=rs.getInt(1);
+                      System.out.println(rs.getInt(1));
+
+              }
+              rs.close();
+              stmt.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }   
+        return ref;   
     }
     
     /*

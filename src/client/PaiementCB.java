@@ -41,6 +41,16 @@ public class PaiementCB extends Achat{
     private JTextField textField_3;
     private IGestion g;
     
+    static  ArrayList<Article> listeArticlesFacture = new ArrayList<Article>();
+    
+    public static ArrayList<Article> getListeArticlesFacture() {
+            return listeArticlesFacture;
+        }
+    
+    public static void setListeArticlesFacture(ArrayList<Article> listeArticlesFacture) {
+        PaiementCB.listeArticlesFacture = listeArticlesFacture;
+    }
+    
 
     /**
      * Launch the application.
@@ -131,6 +141,13 @@ public class PaiementCB extends Achat{
         btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 InterfaceClient ic=new InterfaceClient();
+                try {
+                    g.createFacture();
+                    g.createFactureArticle();
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 ecrireTicketDeCaisse();
                 frame.setVisible(false);
             }
@@ -161,8 +178,9 @@ public class PaiementCB extends Achat{
     
   //Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv
     public void ecrireTicketDeCaisse() {
-        Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv");
-        System.out.print(Achat.getListeArticles().size());
+        Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
+        //Path chemin = Paths.get("./Ticket_De_Caisse/Facturation.csv");
+        
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);
                 String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
