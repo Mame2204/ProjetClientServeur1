@@ -158,15 +158,14 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         try {
             double montant=0.0;
             stmt = con.createStatement();
+            String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
             //Statement stmt1 = con.createStatement();
             for(int i=0; i<Achat.getListeArticles().size();i++) {
                 System.out.print("New Liste"+Achat.getListeArticles().size());
                 Article a = (Article)Achat.getListeArticles().get(i);
                 montant = montant+a.getPrix()*a.getNbStock();
-                String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
                 String s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
-                String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
-                stmt.executeUpdate(sql);
+                
                 //String recupRefFact="SELECT max(ref) from facture";
                 //stmt.executeQuery(recupRefFact);
                 
@@ -177,6 +176,8 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
                  */
                  
             }
+            String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
+            stmt.executeUpdate(sql);
             stmt.close(); 
             //stmt1.close(); 
             //return true;
@@ -187,6 +188,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         }  
         return true;     
     }
+    
     @Override
     public boolean createFactureArticle() throws RemoteException {
         try {

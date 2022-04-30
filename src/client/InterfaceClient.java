@@ -67,10 +67,12 @@ public class InterfaceClient {
 		this.client=new UnClient();
 		initialize();
 	}
+	
 	public InterfaceClient(UnClient c) {
 		this.client=c;
 		initialize();
 	}
+	
 	private void rechercher() {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
@@ -81,6 +83,7 @@ public class InterfaceClient {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 100);
 		frame.getContentPane().add(scrollPane);
@@ -93,7 +96,7 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
