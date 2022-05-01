@@ -49,24 +49,16 @@ public class InterfaceServer {
     
     private void rechercher() {
         table = new JTable();
-        //g.getFactures(txtDate.getText());
         table.setBounds(206, 95, 782, 127);
         String s=txtDate.getText();
         String[] column= {"Date","Reference facture","Mode de paiement","Montant"};
-        try {
-            
-            System.out.println("des taille table"+g.getFactures(s)[26][2]);
-        } catch (RemoteException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        
         try {
             table = new javax.swing.JTable((String[][])g.getFactures(s),column);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         try {
-            System.out.print("CA: "+g.getCA(s));
             valueChiffreDaffaires.setText(""+g.getCA(s));
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -107,13 +99,6 @@ public class InterfaceServer {
         table.setBounds(206, 95, 782, 127);
         String[] column= {"Date","Reference facture","Mode de paiement","Montant"};
         table = new javax.swing.JTable(new String[0][4],column);
-        
-        
-//      try {
-//          table = new javax.swing.JTable((String[][])g.getArticles(),column);
-//      } catch (RemoteException e) {
-//          e.printStackTrace();
-//      }
          
         scrollPane = new JScrollPane(table);
         scrollPane.setBounds(67, 155, 718, 170);

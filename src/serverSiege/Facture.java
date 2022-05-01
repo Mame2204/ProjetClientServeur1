@@ -3,13 +3,15 @@ package serverSiege;
 public class Facture {
     private String reference;
     private String date;
-    private double modePayement;
-    private int montant;
-    public Facture(String date, double modePayement, int montant) {
+    private String modePayement;
+    private double montant;
+    public Facture(String date, String modePayement, double montant) {
         super();
         this.date = date;
         this.modePayement = modePayement;
         this.montant = montant;
+    }
+    public Facture() {
     }
     public String getReference() {
         return reference;
@@ -23,16 +25,16 @@ public class Facture {
     public void setDate(String date) {
         this.date = date;
     }
-    public double getModePayement() {
+    public String getModePayement() {
         return modePayement;
     }
-    public void setModePayement(double modePayement) {
+    public void setModePayement(String modePayement) {
         this.modePayement = modePayement;
     }
-    public int getMontant() {
+    public double getMontant() {
         return montant;
     }
-    public void setMontant(int montant) {
+    public void setMontant(double montant) {
         this.montant = montant;
     }
 

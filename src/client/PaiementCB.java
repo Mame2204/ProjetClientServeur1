@@ -176,10 +176,8 @@ public class PaiementCB extends Achat{
         frame.setVisible(true);
     }
     
-  //Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv
     public void ecrireTicketDeCaisse() {
         Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
-        //Path chemin = Paths.get("./Ticket_De_Caisse/Facturation.csv");
         
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);

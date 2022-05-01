@@ -185,16 +185,6 @@ public class InterfaceClient {
 		btnExit.setBounds(369, 313, 115, 29);
 		frame.getContentPane().add(btnExit);
 		
-        /*
-         * JButton btnModifierUnArticle = new JButton("Modifier un article");
-         * btnModifierUnArticle.addActionListener(new ActionListener() { public void
-         * actionPerformed(ActionEvent e) { ModifierArticle m=new ModifierArticle();
-         * frame.setVisible(false); } });
-         */
-        /*
-         * btnModifierUnArticle.setBounds(638, 313, 185, 29);
-         * frame.getContentPane().add(btnModifierUnArticle);
-         */
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -244,45 +234,5 @@ public class InterfaceClient {
 		
 		
          frame.setVisible(true);
-		
-//		frame = new JFrame();
-//		frame.setBounds(100, 100, 1213, 608);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.getContentPane().setLayout(null);
-//		
-//		JPanel panel = new JPanel();
-//		panel.setBounds(310, 5, 571, 39);
-//		panel.setToolTipText("");
-//		frame.getContentPane().add(panel);
-//		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-//		
-//		JLabel search = new JLabel("Rechercher:");
-//		search.setVerticalAlignment(SwingConstants.TOP);
-//		search.setFont(new Font("Tahoma", Font.BOLD, 18));
-//		panel.add(search);
-//		
-//		txtSearch = new JTextField();
-//		search.setLabelFor(txtSearch);
-//		panel.add(txtSearch);
-//		txtSearch.setColumns(25);
-//		
-//		JButton btnSearch = new JButton("search");
-//		btnSearch.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//			}
-//		});
-//		panel.add(btnSearch);
-//		
-//		table = new JTable();
-//		table.setBounds(206, 95, 782, 127);
-//		frame.getContentPane().add(table);
-//		
-//		JButton btnExit = new JButton("Exit");
-//		btnExit.setBounds(369, 313, 115, 29);
-//		frame.getContentPane().add(btnExit);
-//		
-//		JButton btnModifierUnArticle = new JButton("Modifier un article");
-//		btnModifierUnArticle.setBounds(638, 313, 185, 29);
-//		frame.getContentPane().add(btnModifierUnArticle);
 	}
 }

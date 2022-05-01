@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
 
     private static final long serialVersionUID = 1L;
@@ -37,25 +36,27 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
     
     @Override
     public String[][] getFactures (String r) {
+        String[][] data = null; 
+        int rowcount=0;
         
-            String[][] data = new String[27][4]; // [rows][columns]
             System.out.println("Creating statement..."); 
             try {
-                stmt = con.createStatement();
-                String sql = "SELECT * FROM facture where date like '"+r+"%'";
+                stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                String sql = "SELECT * FROM facture where date like '"+r+"%' or ref="+r+"";
                 ResultSet rs = stmt.executeQuery(sql);
-                System.out.println("des factures");
+                rs.last();
+                rowcount = rs.getRow();
+                //Move to beginning
+                rs.beforeFirst();
+                
+                data = new String[rowcount][4];
                 int i=0;
                   while(rs.next()) {
                             try {
                               data[i][0]=rs.getString(1);
-                              System.out.println(rs.getString(1));
                               data[i][1]=rs.getString(2);
-                              System.out.println(rs.getString(2));
                               data[i][2]=rs.getString(3);
-                              System.out.println(rs.getString(3));
                               data[i][3]=rs.getString(4);
-                              System.out.println(rs.getDouble(4));
                               
                           } catch (SQLException e) {
                               // TODO Auto-generated catch block
@@ -65,7 +66,6 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
                         i=i+1;}
                   rs.close();
                   stmt.close();
-                  System.out.println("i: "+i);
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -74,15 +74,99 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
         return data;
     }
     
+    @Override
+    public String[][] getFactureArticle(int r) {
+        String[][] data = null; 
+        int rowcount=0;
+        
+        System.out.println("Creating statement..."); 
+        try {
+            stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            String sqll = "SELECT * FROM facture_article where ref_facture = "+r+"";
+            ResultSet rs = stmt.executeQuery(sqll);
+
+            rs.last();
+            rowcount = rs.getRow();
+            
+            //Move to beginning
+            rs.beforeFirst();
+            
+            data = new String[rowcount][4];
+            int i=0;
+            while(rs.next()) {
+                      try {
+                        data[i][0]=rs.getString(1);
+                        data[i][1]=rs.getString(2);
+                        data[i][2]=rs.getString(3);
+                        
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                  
+                  i=i+1;}
+              rs.close();
+              stmt.close();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+      
+    return data;
+}
+    
+    @Override
+    public String[][] getFacture (int r) {
+        String[][] data = null; 
+        int rowcount=0;
+        
+            System.out.println("Creating statement..."); 
+            try {
+                stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                String sql = "SELECT * FROM facture where ref='"+r+"'";
+                ResultSet rs = stmt.executeQuery(sql);
+                
+                rs.last();
+                rowcount = rs.getRow();
+                
+                //Move to beginning
+                rs.beforeFirst();
+                
+                data = new String[rowcount][4];
+                int i=0;
+                  while(rs.next()) {
+                            try {
+                              data[i][0]=rs.getString(1);
+                              data[i][1]=rs.getString(2);
+                              data[i][2]=rs.getString(3);
+                              data[i][3]=rs.getString(4);
+                              
+                          } catch (SQLException e) {
+                              // TODO Auto-generated catch block
+                              e.printStackTrace();
+                          }
+                        
+                        i=i+1;}
+                  rs.close();
+                  stmt.close();
+
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+                
+        return data;
+    }
+    
+    @Override
     public int getCA (String r) {
         
-        int CA = 0; // [rows][columns]
+        int CA = 0;
         System.out.println("Creating statement..."); 
         try {
             stmt = con.createStatement();
             String sql = "SELECT sum(montant) FROM facture where date like '"+r+"%'";
             ResultSet rs = stmt.executeQuery(sql);
-            System.out.println("CA");
+
                         try {
                             while(rs.next())  {
                           CA=rs.getInt(1);
@@ -93,7 +177,7 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
                       }
               rs.close();
               stmt.close();
-              System.out.println("data: "+CA);
+
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

@@ -101,9 +101,6 @@ public class PaiementEspece {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("TEST1");
-                
-                //System.out.println("TEST2");
                 InterfaceClient ic=new InterfaceClient();
                 try {
                     g.createFacture();
@@ -121,10 +118,9 @@ public class PaiementEspece {
 	}
 	
 	
-	//Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv
 	public void ecrireTicketDeCaisse() {
         Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
-	    //Path chemin = Paths.get("/Ticket_De_Caisse/Facturation.csv");
+
 	    System.out.print(Achat.getListeArticles().size());
         PaiementEspece.setListeArticlesFacture(Achat.getListeArticles());
         for(int i=0; i<Achat.getListeArticles().size();i++) {

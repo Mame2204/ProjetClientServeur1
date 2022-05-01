@@ -59,7 +59,6 @@ public class Paiement {
 		lblchoixPaiement.setBounds(243, 16, 406, 20);
 		frame.getContentPane().add(lblchoixPaiement);
 		
-		//JProgressBar progressBar = new JProgressBar();
 		progressBar = new JProgressBar(0,1000);
 		progressBar.setIndeterminate(true);
 		progressBar.setForeground(Color.GREEN);
@@ -83,25 +82,22 @@ public class Paiement {
 				lblPrparationDuPaiement.setVisible(true);
 				rdbtCB.setEnabled(false);
 				rdbtCheque.setEnabled(false);
-				//progressBar.setVisible(true);
+
 				PaiementEspece esp=new PaiementEspece();
                 frame.setVisible(false);
-				//loop();
+
 			}
 		});
 		rdbtEspece.setBounds(44, 117, 155, 29);
 		frame.getContentPane().add(rdbtEspece);
 		
-		//JRadioButton rdbtCB = new JRadioButton("Carte Bancaire");
 		rdbtCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblPrparationDuPaiement.setVisible(true);
 				rdbtEspece.setEnabled(false);
                 rdbtCheque.setEnabled(false);
-				//progressBar.setVisible(true);
 				PaiementCB cb=new PaiementCB();
                 frame.setVisible(false);
-				//loop();
 			}
 		});
 		
@@ -110,16 +106,13 @@ public class Paiement {
 		rdbtCB.setBounds(361, 117, 155, 29);
 		frame.getContentPane().add(rdbtCB);
 		
-		//JRadioButton rdbtCheque = new JRadioButton("Ch\u00E8que");
 		rdbtCheque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblPrparationDuPaiement.setVisible(true);
 				rdbtEspece.setEnabled(false);
 				rdbtCB.setEnabled(false);
-				//progressBar.setVisible(true);
 				PaiementCheque ch=new PaiementCheque();
                 frame.setVisible(false);
-				//loop();
 			}
 		});
 		rdbtCheque.setBounds(678, 117, 155, 29);
@@ -132,9 +125,5 @@ public class Paiement {
 		frame.setVisible(true);
 		
 	}
-    /*
-     * public static void loop() { int i=0; while(i <= 1000) { // remplit la barre
-     * progressBar.setValue(i); i = i + 10; try { // retarder le thread
-     * Thread.sleep(120); } catch(Exception e){} } }
-     */
+    
 }

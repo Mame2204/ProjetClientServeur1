@@ -179,11 +179,6 @@ public class Achat {
 		lblQuantit.setBounds(28, 274, 80, 20);
 		frame.getContentPane().add(lblQuantit);
 		
-//		txtQuantite = new JTextField();
-//		txtQuantite.setBounds(165, 271, 146, 35);
-//		frame.getContentPane().add(txtQuantite);
-//		txtQuantite.setColumns(10);
-		
 		JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(0, 0, 50, 1));
 		spinner.setBounds(165, 271, 146, 35);
@@ -239,7 +234,7 @@ public class Achat {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		//System.out.print(table.equals(null));
+		
 		if (table[0][0] == null) {
 		    System.out.print("Pas de stock necessaire pour cet achat");
         JOptionPane.showMessageDialog(null,
@@ -258,8 +253,7 @@ public class Achat {
 	
         public void ecrireTicketDeCaisse() {
             Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv");
-            System.out.print(listeArticles.size()+"fonctionecri");
-            //Path chemin = Paths.get("/Users/mariamekaba/Desktop/MASTERM1MIAGE/Architecture Client Serveur/Facturation.csv");
+            
             for(int i=0; i<listeArticles.size();i++) {
                 Article a = (Article)listeArticles.get(i);
                     String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
