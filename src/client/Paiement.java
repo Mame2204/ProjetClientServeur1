@@ -115,7 +115,7 @@ public class Paiement {
                 frame.setVisible(false);
 			}
 		});
-		rdbtCheque.setBounds(678, 117, 155, 29);
+		rdbtCheque.setBounds(678, 117, 155, 29); 
 		frame.getContentPane().add(rdbtCheque);
 		
 		bg.add(rdbtCB);

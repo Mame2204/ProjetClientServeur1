@@ -33,12 +33,12 @@ import java.awt.ScrollPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
+ 
 public class InterfaceClient {
 
 	private JFrame frame;
 	private JTextField txtSearch;
-	private JTable table;
+	JTable table;
 	private JScrollPane scrollPane;
 	private IGestion g;
 	private UnClient client;
@@ -64,14 +64,13 @@ public class InterfaceClient {
 	 * Create the application.
 	 */
 	public InterfaceClient() {
-		this.client=new UnClient();
+		//this.client=new UnClient();
 		initialize();
 	}
 	
-	public InterfaceClient(UnClient c) {
-		this.client=c;
-		initialize();
-	}
+    /*
+     * public InterfaceClient(UnClient c) { this.client=c; initialize(); }
+     */
 	
 	private void rechercher() {
 		table = new JTable();
@@ -85,7 +84,7 @@ public class InterfaceClient {
 		}
 		
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(240, 164, 718, 100);
+		scrollPane.setBounds(240, 164, 718, 350);
 		frame.getContentPane().add(scrollPane);
 		
 	}
@@ -96,7 +95,7 @@ public class InterfaceClient {
 		
 		try {
 			g=new GestionImpl();
-			g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
+			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -114,9 +113,10 @@ public class InterfaceClient {
 		
 		bienvenue = new JLabel("Bienvenue");
 		bienvenue.setBounds(10, 63, 69, 20);
-		if(client.getPseudo()!=null) {
-			bienvenue.setText("Bienvenue " +client.getPseudo());
-		}
+        /*
+         * if(client.getPseudo()!=null) { bienvenue.setText("Bienvenue "
+         * +client.getPseudo()); }
+         */
 		frame.getContentPane().add(bienvenue);
 		
 		JLabel search = new JLabel("Rechercher:");
@@ -150,7 +150,7 @@ public class InterfaceClient {
 					e.printStackTrace();
 				}
 				scrollPane = new JScrollPane(table);
-				scrollPane.setBounds(240, 164, 718, 100);
+				scrollPane.setBounds(240, 164, 718, 350);
 				frame.getContentPane().add(scrollPane);
 			}
 		});
@@ -166,7 +166,7 @@ public class InterfaceClient {
 		}
 		 
 	    scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(240, 164, 718, 100);
+		scrollPane.setBounds(240, 164, 718, 350);
 		frame.getContentPane().add(scrollPane);
 		
 		JButton btnExit = new JButton("Exit");
@@ -179,10 +179,10 @@ public class InterfaceClient {
 					System.exit(0);;
 				}
 				btnExit.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnExit.setBounds(369, 313, 115, 29);
+				btnExit.setBounds(450, 530, 115, 29); //313
 			}
 		});
-		btnExit.setBounds(369, 313, 115, 29);
+		btnExit.setBounds(450, 530, 115, 29);
 		frame.getContentPane().add(btnExit);
 		
 		
@@ -219,7 +219,7 @@ public class InterfaceClient {
 			}
 		});
 		
-		JMenu mnStock = new JMenu("Gestion de Stock");
+		JMenu mnStock = new JMenu("Gestion");
 		menuBar.add(mnStock);
         JMenuItem mntmStock = new JMenuItem("Ajout de stock");
         mnStock.add(mntmStock);
@@ -231,7 +231,40 @@ public class InterfaceClient {
                 frame.setVisible(false);
             }
         });
-		
+        
+        
+        JMenuItem mntmMiseJour = new JMenuItem("Mise \u00E0 jour prix");
+        mnStock.add(mntmMiseJour);
+        mntmMiseJour.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    g.MiseAJour();
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                InterfaceClient home=new InterfaceClient();
+                frame.setVisible(false);
+            }
+        });
+        
+        
+        
+        JMenu mnFacture = new JMenu("Facture");
+        menuBar.add(mnFacture);
+
+        JMenuItem mntmConsultationFacture = new JMenuItem("Consultation facture");
+        mnFacture.add(mntmConsultationFacture);
+        mntmConsultationFacture.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Consult_Facture consultFacture = new Consult_Facture();
+                frame.setVisible(false);
+            }
+        });
 		
          frame.setVisible(true);
 	}

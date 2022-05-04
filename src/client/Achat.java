@@ -30,6 +30,8 @@ import javax.swing.JTextField;
 import server.Article;
 import server.GestionImpl;
 import server.IGestion;
+import serverSiege.GestSiegeImpl;
+import serverSiege.IGestSiege;
 
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
@@ -46,6 +48,7 @@ public class Achat {
 	private JTextField txtPrix;
 	private JTextField txtQuantite;
 	private IGestion g;
+	private IGestSiege gs;
 	private double montant;
 	static  ArrayList<Article> listeArticles = new ArrayList<Article>();
 	
@@ -86,11 +89,12 @@ public class Achat {
 	 */
 	private void initialize() {
 		try {
-			g=new GestionImpl();
+			//g=new GestionImpl();
 			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 946, 593);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -112,7 +116,6 @@ public class Achat {
 		JMenuItem mntmAcheter = new JMenuItem("Achat");
 		mnCaisse.add(mntmAcheter);
 		mntmAcheter.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -125,7 +128,7 @@ public class Achat {
 			new Object[][] {
 			},
 			new String[] {
-				"R�f�rence", "Famille", "Prix", "Quantit�"
+				"R\u00E9ference", "Famille", "Prix", "Quantit\u00E9"
 			}
 		));
 		tlisteArticles.setBounds(598, 100, 1, 1);
@@ -139,7 +142,7 @@ public class Achat {
 		lblListe.setBounds(507, 57, 254, 20);
 		frame.getContentPane().add(lblListe);
 		
-		JLabel lblRef = new JLabel("Reference :");
+		JLabel lblRef = new JLabel("R\u00E9ference :");
 		lblRef.setBounds(28, 93, 101, 20);
 		frame.getContentPane().add(lblRef);
 		
@@ -175,12 +178,12 @@ public class Achat {
 		frame.getContentPane().add(txtPrix);
 		txtPrix.setColumns(10);
 		
-		JLabel lblQuantit = new JLabel("Quantite :");
+		JLabel lblQuantit = new JLabel("Quantit\u00E9 :");
 		lblQuantit.setBounds(28, 274, 80, 20);
 		frame.getContentPane().add(lblQuantit);
 		
 		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(0, 0, 50, 1));
+		spinner.setModel(new SpinnerNumberModel(0, 0, 1000, 1));
 		spinner.setBounds(165, 271, 146, 35);
 		frame.getContentPane().add(spinner);
 		
@@ -191,16 +194,34 @@ public class Achat {
 		JButton btnAjouter = new JButton("Ajouter au panier");
 		btnAjouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			    String[][] table = null;
+		        //String s=null;
+		        String s=txtRef.getText();
+		        
+		            try {
+		                 table = ((String[][])g.rechArticle(s));
+		            } 
+		            catch (RemoteException e1) {
+		                e1.printStackTrace();
+		            }
+		            if (Integer.parseInt(table[0][3]) < (int)spinner.getValue()) {
+			        JOptionPane.showMessageDialog(null,
+	                        "Pas de stock suffisant pour cet achat",
+	                        "Avertissement",
+	                        JOptionPane.WARNING_MESSAGE);
+			    } else {
 				 DefaultTableModel MonModel = (DefaultTableModel)tlisteArticles.getModel();
 				 MonModel.addRow(new Object[] {txtRef.getText(),txtFamille.getText(),txtPrix.getText(),spinner.getValue()});
 				 listeArticles.add(new Article(txtRef.getText(),txtFamille.getText(),Double.parseDouble(txtPrix.getText()),(int)spinner.getValue()));
 				 montant=montant+Double.parseDouble(txtPrix.getText())* (int)spinner.getValue();
 				 label.setText(String.valueOf(montant));
+				 //System.out.print("taille liste createFactureget: "+getListeArticles().size());
 				 
 				 txtRef.setText("");
 				 txtFamille.setText("");
 				 txtPrix.setText("");
-				 spinner.setValue(0);;
+				 spinner.setValue(0);
+			    }
 			}
 		});
 		btnAjouter.setBounds(161, 398, 166, 29);
@@ -209,9 +230,9 @@ public class Achat {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    System.out.print(listeArticles.size()+"fonctionecri");
+			    frame.setVisible(false);
 				Paiement p=new Paiement();
-				frame.setVisible(false);
+				
 			}
 		});
 		
@@ -228,46 +249,39 @@ public class Achat {
 	
 	private void rechercher() {
 		String[][] table = null;
+		//String s=null;
 		String s=txtRef.getText();
-		try {
-			 table = ((String[][])g.rechArticle(s));
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+        
 		
-		if (table[0][0] == null) {
-		    System.out.print("Pas de stock necessaire pour cet achat");
-        JOptionPane.showMessageDialog(null,
-                "Pas de stock necessaire pour cet achat",
-                "Avertissement",
-                JOptionPane.WARNING_MESSAGE);
-		} else {
-    		for(int i=0; i<5;i++) {
-    			 txtRef.setText(""+table[0][0]);
-    			 txtFamille.setText(""+table[0][1]);
-    			 txtPrix.setText(""+table[0][2]);
+    		try {
+    			 table = ((String[][])g.rechArticle(s));
+    		} 
+    		catch (RemoteException e) {
+    			e.printStackTrace();
     		}
-		}
-		
+    		
+    		if (table.length == 0) {
+    	          JOptionPane.showMessageDialog(null,
+    	          "Aucun article ne correspond à cette reference", "Avertissement",
+    	          JOptionPane.WARNING_MESSAGE);} 
+    		else if (Integer.parseInt(table[0][3]) == 0) {
+                    //System.out.print("Pas de stock necessaire pour cet achat");
+                JOptionPane.showMessageDialog(null,
+                        "Pas de stock necessaire pour cet achat",
+                        "Avertissement",
+                        JOptionPane.WARNING_MESSAGE);
+                } 
+                else {
+                    
+                    for(int i=0; i<5;i++) {
+                         txtRef.setText(""+table[0][0]);
+                         txtFamille.setText(""+table[0][1]);
+                         txtPrix.setText(""+table[0][2]);
+                    }
+                }
+
+    		
+    	          
 	}
-	
-        public void ecrireTicketDeCaisse() {
-            Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur/Ticket_De_Caisse/Facturation.csv");
-            
-            for(int i=0; i<listeArticles.size();i++) {
-                Article a = (Article)listeArticles.get(i);
-                    String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                    String s = dateDuJour +", MK, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
-                    byte[] data = s.getBytes();
-                    OutputStream output = null; 
-                    try { 
-                        output = new BufferedOutputStream(Files.newOutputStream(chemin, StandardOpenOption.APPEND)); 
-                        output.write(data);
-                        output.flush();
-                        output.close();
-                    } catch (Exception e) { System.out.println("Message " + e); }
-           }
-             
-        }
 	
 }

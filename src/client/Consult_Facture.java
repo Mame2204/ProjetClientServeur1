@@ -60,47 +60,25 @@ public class Consult_Facture {
 		initialize();
 	}
 	
-	 private void rechercher() {
-	        table = new JTable();
-
-	        table.setBounds(130, 135, 1, 1);
-	        String s=txtFacture.getText();
-	        String[] column= {"Reference","Famille","Prix","Quantite","Montant"};
-	        
-	        try {
-	            table = new javax.swing.JTable((String[][])g.TrouveArticlesFacture(Integer.parseInt(s)),column);
-	            detailsFact=g.TrouveFacture(Integer.parseInt(s));
-	            
-	        } catch (RemoteException e) {
-	            e.printStackTrace();
-	        }
-	        lblDatefac.setText(""+detailsFact[0][1]);
-	        lblCarteBanquaire.setText(""+detailsFact[0][2]);
-	        lblMontant.setText(""+detailsFact[0][3]);
-	        scrollPane = new JScrollPane(table);
-	        scrollPane.setBounds(67, 155, 718, 170);
-	        frame.getContentPane().add(scrollPane);
-	        
-	    }
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 	    try {
-            g=new GestionImpl();
-            g= (IGestion) Naming.lookup("rmi://localhost:1910/gestion");
+            //g=new GestionImpl();
+            g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
         } catch (Exception e1) {
             e1.printStackTrace();
         }
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.PINK);
+		frame.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frame.setBounds(100, 100, 952, 554);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblReferenceFacture = new JLabel("Reference facture :");
-		lblReferenceFacture.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblReferenceFacture.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblReferenceFacture.setBounds(97, 46, 188, 31);
 		frame.getContentPane().add(lblReferenceFacture);
 		
@@ -115,16 +93,16 @@ public class Consult_Facture {
 	                rechercher();
 	            }
 	        });
-	        btnChercher.setBounds(497, 59, 115, 34);
+	        btnChercher.setBounds(627, 44, 115, 37);
 	        frame.getContentPane().add(btnChercher);
 		
 		JLabel lblDate = new JLabel("Date :");
-		lblDate.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblDate.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblDate.setBounds(97, 133, 69, 20);
 		frame.getContentPane().add(lblDate);
 		
 		JLabel lblModePaiement = new JLabel("Mode paiement : ");
-		lblModePaiement.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblModePaiement.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblModePaiement.setBounds(474, 133, 159, 20);
 		frame.getContentPane().add(lblModePaiement);
 		
@@ -138,11 +116,11 @@ public class Consult_Facture {
 		frame.getContentPane().add(scrollPane);
 		
 		JLabel lblMontantTotal = new JLabel("Montant total :");
-		lblMontantTotal.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblMontantTotal.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMontantTotal.setBounds(350, 462, 159, 20);
 		frame.getContentPane().add(lblMontantTotal);
 		
-		lblMontant = new JLabel("");
+		lblMontant = new JLabel("0 €");
 		lblMontant.setBounds(524, 463, 69, 20);
 		frame.getContentPane().add(lblMontant);
 		
@@ -151,8 +129,35 @@ public class Consult_Facture {
 		frame.getContentPane().add(lblDatefac);
 		
 		lblCarteBanquaire = new JLabel("");
-		lblCarteBanquaire.setBounds(670, 134, 142, 20);
+		lblCarteBanquaire.setBounds(670, 134, 142, 20); 
 		frame.getContentPane().add(lblCarteBanquaire);
+		
+		frame.setVisible(true);
 	}
+	private void rechercher() {
+        table = new JTable();
+
+        table.setBounds(130, 135, 1, 1);
+        String s=txtFacture.getText();
+        String[] column= {"Reference","Famille","Prix","Quantite","Montant"};
+        
+        try {
+            table = new javax.swing.JTable((String[][])g.TrouveArticlesFacture(Integer.parseInt(s)),column);
+            detailsFact=g.TrouveFacture(Integer.parseInt(s));
+            
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        lblDatefac.setText(""+detailsFact[0][1]);
+        lblCarteBanquaire.setText(""+detailsFact[0][2]);
+        lblMontant.setText(""+detailsFact[0][3]+" €");
+        scrollPane = new JScrollPane(table);
+        //scrollPane.setBounds(67, 155, 718, 170);
+        scrollPane.setBounds(70, 191, 767, 230);
+        frame.getContentPane().add(scrollPane);
+        
+        frame.setVisible(true);
+        
+    }
 
 }

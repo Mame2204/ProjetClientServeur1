@@ -72,7 +72,7 @@ public class PaiementEspece {
 	 */
 	private void initialize() {
 	    try {
-            g=new GestionImpl();
+            //g=new GestionImpl();
             g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -101,14 +101,16 @@ public class PaiementEspece {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                InterfaceClient ic=new InterfaceClient();
+                
                 try {
-                    g.createFacture();
+                    g.createFacture(Achat.getListeArticles());
+                    g.createFactureArticle(Achat.getListeArticles());
+                    ecrireTicketDeCaisse();
                 } catch (RemoteException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                ecrireTicketDeCaisse();
+                InterfaceClient ic=new InterfaceClient();
                 frame.setVisible(false);
             }
         });
@@ -121,7 +123,7 @@ public class PaiementEspece {
 	public void ecrireTicketDeCaisse() {
         Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
 
-	    System.out.print(Achat.getListeArticles().size());
+	    //System.out.print(Achat.getListeArticles().size());
         PaiementEspece.setListeArticlesFacture(Achat.getListeArticles());
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);
@@ -130,7 +132,7 @@ public class PaiementEspece {
                 try {
                     g.setArticle1(a); 
                 } catch (RemoteException e1) {
-                    // TODO Auto-generated catch block
+                    // TODO Auto-generated catch block 
                     e1.printStackTrace();
                 }
                 byte[] data = s.getBytes();

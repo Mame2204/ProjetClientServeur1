@@ -72,7 +72,7 @@ public class PaiementCheque {
 	 */
 	private void initialize() {
 	    try {
-            g=new GestionImpl();
+            //g=new GestionImpl();
             g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -98,17 +98,19 @@ public class PaiementCheque {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                InterfaceClient ic=new InterfaceClient();
+                
                 try {
-                    g.createFacture();
+                    g.createFacture(Achat.getListeArticles());
+                    g.createFactureArticle(Achat.getListeArticles());
+                    ecrireTicketDeCaisse();
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                ecrireTicketDeCaisse();
+                InterfaceClient ic=new InterfaceClient();
                 frame.setVisible(false);
             }
-        });
+        }); 
 		btnPayer.setBounds(430, 538, 115, 29);
         frame.getContentPane().add(btnPayer);
         frame.setVisible(true);
@@ -117,7 +119,7 @@ public class PaiementCheque {
 	public void ecrireTicketDeCaisse() {
         Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
 
-	    System.out.print(Achat.getListeArticles().size());
+	    //System.out.print(Achat.getListeArticles().size());
         PaiementCheque.setListeArticlesFacture(Achat.getListeArticles());
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);

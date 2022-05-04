@@ -33,12 +33,13 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     private int numUpd;
     private IGestSiege gs;
     
-    static  ArrayList<Article> listeArticlesFacture = new ArrayList<Article>();
-    static  Facture facture = new Facture();
-    
-    public static ArrayList<Article> getListeFacturesArticless() {
-            return listeArticlesFacture;
-        }
+    /*
+     * static ArrayList<Article> listeArticlesFacture = new ArrayList<Article>();
+     * static Facture facture = new Facture();
+     * 
+     * public static ArrayList<Article> getListeFacturesArticles() { return
+     * listeArticlesFacture; }
+     */
     
     
     public GestionImpl() throws RemoteException {
@@ -48,12 +49,19 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
             try {
                 con = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestion","root","root");
                 stmt=con.createStatement();
-                System.out.println("Connected"); 
+                System.out.println("Connected Magasin"); 
             } catch (SQLException e) {
                 e.printStackTrace();
             }          
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) { 
             e.printStackTrace();
+        }
+        
+        try {
+            gs=new GestSiegeImpl();
+            gs= (IGestSiege) Naming.lookup("rmi://localhost:1920/gestion");
+        } catch (Exception e1) { 
+            e1.printStackTrace();
         }
     }
 
@@ -72,12 +80,12 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
                       //Move to beginning
                       rs.beforeFirst();
                       
-                      data = new String[rowcount][4];
+                      data = new String[rowcount][4]; 
                       int i=0;
                       while(rs.next())  {
                           for(int j=0;j<4;j++) {
                               data[i][j]=rs.getString(j+1);
-                              System.out.println(rs.getString(j+1));
+                              //System.out.println(rs.getString(j+1));
                           }
                           i=i+1;
                       }
@@ -111,7 +119,7 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
               while(rs.next())  {
                   for(int j=0;j<4;j++) {
                       data[i][j]=rs.getString(j+1);
-                      System.out.println(rs.getString(j+1));
+                      //System.out.println(rs.getString(j+1));
                   }
                   i=i+1;
               }
@@ -128,7 +136,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
             stmt = con.createStatement();
             String sql = "UPDATE article set famille='"+a.getFamille()+"',prix="+a.getPrix()+" ,nbStock=" +a.getNbStock()+" where ref='"+a.getReference()+"'";
             
-            System.out.println("article: "+a.getFamille()+" "+a.getPrix()+" "+a.getNbStock());
             stmt.executeUpdate(sql);
             stmt.close(); 
             return true;
@@ -173,8 +180,8 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         try {
             
             Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String sq = "SELECT * FROM article where ref='"+r+"' and nbStock>0";
-            
+            //String sq = "SELECT * FROM article where ref='"+r+"' and nbStock>0";
+            String sq = "SELECT * FROM article where ref='"+r+"'";
             ResultSet rs = st.executeQuery(sq);  
             rs.last();
             rowcount = rs.getRow();
@@ -199,70 +206,20 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         return data;     
     }
     
-    
     @Override
-    public boolean createFacture() throws RemoteException {
-        try {
-            double montant=0.0;
-            stmt = con.createStatement();
-            String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-            for(int i=0; i<Achat.getListeArticles().size();i++) {
-                Article a = (Article)Achat.getListeArticles().get(i);
-                montant = montant+a.getPrix()*a.getNbStock();
-                String s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
-                 
-            }
-            String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
-            stmt.executeUpdate(sql);
-            stmt.close();
-            
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }  
+    public boolean createFacture(ArrayList<Article> listeArticles) throws RemoteException {
+        gs.createFactureS(listeArticles);
+        
         return true;     
     }
     
     @Override
-    public boolean createFactureArticle() throws RemoteException {
-        try {
-            stmt1 = con.createStatement();
-            for(int i=0; i<Achat.getListeArticles().size();i++) {
-                Article a = (Article)Achat.getListeArticles().get(i);
-                int ref=getReference(); 
-                String sql1 = "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.getNbStock()+")"; 
-                stmt1.executeUpdate(sql1);
-            }
-            stmt1.close();
-            
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }  
-        return true;     
+    public boolean createFactureArticle(ArrayList<Article> listeArticles) throws RemoteException {
+        gs.createFactureArticleS(listeArticles);
+        return true;    
     }
 
-    @Override
-    public int getReference() {
-        int ref=0;
-        try {
-            stmt = con.createStatement();
-            String sql ="SELECT max(ref) from facture";
-              ResultSet rs = stmt.executeQuery(sql); 
-                  while(rs.next())  {
-                      ref=rs.getInt(1);
-
-                  }
-                  rs.close();
-                  stmt.close();
-              //}
-             
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }   
-        return ref;   
-    }
+   
     
     
     public String[][] TrouveFacture(int refF) {
@@ -275,7 +232,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         }
         
         if (fact[0][0] == null) {
-            System.out.print("Pas de facture de cette reference");
             JOptionPane.showMessageDialog(null,
                 "Pas de facture de cette reference",
                 "Avertissement",
@@ -288,12 +244,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     
     
     public String[][] TrouveArticlesFacture(int refF) {
-        try {
-            gs=new GestSiegeImpl();
-            gs= (IGestSiege) Naming.lookup("rmi://localhost:1940/gestion");
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
         
         String[][] factureArticle = null;
         String[][] articles=null;
@@ -302,7 +252,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         
         try {
             factureArticle = ((String[][])gs.getFactureArticle(refF));
-            System.out.print("taille factureArticle "+factureArticle.length);
             articles = new String[factureArticle.length][5];
             
         } catch (RemoteException e1) {
@@ -311,7 +260,6 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
         }
         
         if (factureArticle[0][0] == null) {
-            System.out.print("Pas de facture de cette reference");
             JOptionPane.showMessageDialog(null,
                 "Pas de facture de cette reference",
                 "Avertissement",
@@ -321,14 +269,12 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
                 try {
                     String[][] a = getArticle(factureArticle[i][1]);
                     if (a[0][0] == null) { 
-                        System.out.print("Pas de facture de cette reference");
                         JOptionPane.showMessageDialog(null,
                             "Pas de facture de cette reference",
                             "Avertissement",
                             JOptionPane.WARNING_MESSAGE);
                     }
                     else {
-                        System.out.print("mt "+mt);
                         articles[i][0]=a[0][0];
                         articles[i][1]=a[0][1];
                         articles[i][2]=a[0][2];
@@ -347,6 +293,11 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
             return articles;
          }
     
+    @Override
+    public void MiseAJour() throws RemoteException {
+        gs.MiseAJour();
+
+    }
  
 
 }

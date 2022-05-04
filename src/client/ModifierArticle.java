@@ -53,7 +53,7 @@ public class ModifierArticle {
 	
 	private void initialize() {
 		try {
-			g=new GestionImpl();
+			//g=new GestionImpl();
 			g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -118,7 +118,7 @@ public class ModifierArticle {
 		        }
 		        int nb=Integer.parseInt(txtQuantite.getText())+Integer.parseInt(table[0][3]);
 				Article a=new Article(txtRef.getText(), txtFamille.getText(),Double.parseDouble(txtPrix.getText()),nb);//+Integer.parseInt(table[0][3].toString()));
-				System.out.println("article: "+a.getFamille()+" "+a.getPrix()+" "+a.getNbStock()+table[0][3]);
+				//System.out.println("article: "+a.getFamille()+" "+a.getPrix()+" "+a.getNbStock()+table[0][3]);
 				try {
 					boolean b=g.setArticle(a);
 				} catch (RemoteException e1) {

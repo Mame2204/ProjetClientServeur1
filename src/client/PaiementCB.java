@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class PaiementCB extends Achat{
-
+ 
     private JFrame frame;
     private JTextField textField;
     private JTextField textField_1;
@@ -80,11 +80,12 @@ public class PaiementCB extends Achat{
      */
     private void initialize() {
         try {
-            g=new GestionImpl();
+            //g=new GestionImpl();
             g= (IGestion) Naming.lookup("rmi://localhost:1940/gestion");
         } catch (Exception e1) {
             e1.printStackTrace();
         }
+        //System.out.print("taille liste CreateFActure : "+Achat.getListeArticles().size());
         frame = new JFrame();
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setBounds(100, 100, 976, 584);
@@ -140,15 +141,17 @@ public class PaiementCB extends Achat{
         JButton btnPayer = new JButton("Payer");
         btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                InterfaceClient ic=new InterfaceClient();
                 try {
-                    g.createFacture();
-                    g.createFactureArticle();
+                    
+                    g.createFacture(Achat.getListeArticles());
+                    g.createFactureArticle(Achat.getListeArticles());
+                    ecrireTicketDeCaisse();
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                ecrireTicketDeCaisse();
+                
+                InterfaceClient ic=new InterfaceClient();
                 frame.setVisible(false);
             }
         });

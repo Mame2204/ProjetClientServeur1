@@ -42,7 +42,7 @@ public class Client extends JFrame {
 					frame.add(c.getFenetre());
 					frame.setSize(1000, 1000);
 					frame.setVisible(true);
-					System.out.println("affichage");
+					//System.out.println("affichage");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -22,7 +22,7 @@ public class Article implements Serializable {
 	}
 
 	/**
-	 * @return the reference
+	 * @return the reference 
 	 */
 	public String getReference() {
 		return reference;

@@ -72,3 +72,74 @@ Date de la facturation, Mode de payement, Ref_Article, Description, Quantité, P
 2022/05/01 01:27:54, Carte Bancaire, A0002, Telephone, 4, 350.0, 1400.0
 2022/05/01 22:44:56, Carte Bancaire, A0004, Sac a dos de randonnée, 3, 10.0, 30.0
 2022/05/01 22:44:56, Carte Bancaire, A0008, Bottes de neige, 4, 15.0, 60.0
+2022/05/03 21:04:58, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/03 21:26:32, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/03 21:26:51, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/03 21:28:01, Carte Bancaire, A0002, Pantalon Cargo, 10, 30.0, 300.0
+2022/05/03 21:34:49, Carte Bancaire, A0002, Pantalon Cargo, 3, 30.0, 90.0
+2022/05/03 21:37:52, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/03 21:46:03, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/04 09:52:16, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/04 09:52:16, Carte Bancaire, A0003, Chaussures de BasketBall, 90, 30.0, 2700.0
+2022/05/04 11:33:28, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/04 11:33:28, Carte Bancaire, A0003, Chaussures de BasketBall, 7, 30.0, 210.0
+2022/05/04 11:39:20, Carte Bancaire, A0003, Chaussures de BasketBall, 3, 30.0, 90.0
+2022/05/04 11:39:20, Carte Bancaire, A0010, Roller Fitness, 4, 45.0, 180.0
+2022/05/04 12:03:44, Carte Bancaire, A0003, Chaussures de BasketBall, 10, 30.0, 300.0
+2022/05/04 12:03:44, Carte Bancaire, A0004, Sac a dos de randonnée, 11, 10.0, 110.0
+2022/05/04 12:10:07, Carte Bancaire, A0004, Sac a dos de randonnée, 3, 10.0, 30.0
+2022/05/04 12:19:17, Carte Bancaire, A0001, Kit Pump, 6, 100.0, 600.0
+2022/05/04 12:22:04, Carte Bancaire, A0001, Kit Pump, 4, 100.0, 400.0
+2022/05/04 12:29:11, Carte Bancaire, A0001, Kit Pump, 2, 100.0, 200.0
+2022/05/04 12:32:09, Carte Bancaire, A0001, Kit Pump, 10, 100.0, 1000.0
+2022/05/04 12:39:50, Carte Bancaire, A0001, Kit Pump, 6, 100.0, 600.0
+2022/05/04 12:48:00, Carte Bancaire, A0002, Pantalon Cargo, 10, 30.0, 300.0
+2022/05/04 13:35:04, Carte Bancaire, A0001, Kit Pump, 2, 100.0, 200.0
+2022/05/04 19:20:57, Carte Bancaire, A0005, T-shirt Chaud, 9, 10.0, 90.0
+2022/05/04 19:55:36, Carte Bancaire, A0003, Chaussures de BasketBall, 8, 30.0, 240.0
+2022/05/04 19:58:20, Carte Bancaire, A0002, Pantalon Cargo, 20, 30.0, 600.0
+2022/05/04 20:17:41, Carte Bancaire, A0003, Chaussures de BasketBall, 20, 30.0, 600.0
+2022/05/04 20:23:16, Carte Bancaire, A0004, Sac a dos de randonnée, 40, 10.0, 400.0
+2022/05/04 20:26:53, Carte Bancaire, A0002, Pantalon Cargo, 30, 30.0, 900.0
+2022/05/04 20:32:02, Carte Bancaire, A0003, Chaussures de BasketBall, 10, 30.0, 300.0
+2022/05/04 20:38:11, Carte Bancaire, A0003, Chaussures de BasketBall, 20, 30.0, 600.0
+2022/05/04 20:42:12, Carte Bancaire, A0005, T-shirt Chaud, 22, 10.0, 220.0
+2022/05/04 20:45:44, Carte Bancaire, A0007, Sac de couchage, 11, 15.0, 165.0
+2022/05/04 21:11:39, Carte Bancaire, A0002, Pantalon Cargo, 9, 30.0, 270.0
+2022/05/04 21:15:31, Carte Bancaire, A0003, Chaussures de BasketBall, 8, 30.0, 240.0
+2022/05/04 21:18:33, Carte Bancaire, A0005, T-shirt Chaud, 9, 10.0, 90.0
+2022/05/04 21:20:33, Carte Bancaire, A0009, Gant Musculation, 3, 6.0, 18.0
+2022/05/04 21:22:02, Carte Bancaire, A0008, Bottes de neige, 7, 15.0, 105.0
+2022/05/04 21:23:54, Carte Bancaire, A0004, Sac a dos de randonnée, 1, 10.0, 10.0
+2022/05/04 22:42:37, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/04 22:47:28, Carte Bancaire, A0002, Pantalon Cargo, 2, 30.0, 60.0
+2022/05/04 22:49:29, Carte Bancaire, A0002, Pantalon Cargo, 3, 30.0, 90.0
+2022/05/04 22:51:41, Carte Bancaire, A0004, Sac a dos de randonnée, 4, 10.0, 40.0
+2022/05/04 22:54:13, Carte Bancaire, A0003, Chaussures de BasketBall, 5, 30.0, 150.0
+2022/05/04 22:56:54, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/04 23:06:31, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/04 23:09:31, Carte Bancaire, A0004, Sac a dos de randonnée, 2, 10.0, 20.0
+2022/05/04 23:26:03, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/04 23:29:48, Carte Bancaire, A0003, Chaussures de BasketBall, 5, 30.0, 150.0
+2022/05/04 23:31:59, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/04 23:36:07, Carte Bancaire, A0003, Chaussures de BasketBall, 1, 30.0, 30.0
+2022/05/04 23:37:31, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/04 23:39:50, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/04 23:41:10, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/04 23:47:04, Carte Bancaire, A0001, Kit Pump, 3, 100.0, 300.0
+2022/05/04 23:48:37, Carte Bancaire, A0001, Kit Pump, 4, 100.0, 400.0
+2022/05/04 23:50:01, Carte Bancaire, A0002, Pantalon Cargo, 4, 30.0, 120.0
+2022/05/04 23:52:04, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 30.0, 120.0
+2022/05/05 00:04:12, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:06:41, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:08:40, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:11:09, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:15:07, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:17:25, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 70.0, 280.0
+2022/05/05 00:21:44, Carte Bancaire, A0004, Sac a dos de randonnée, 32, 50.0, 1600.0
+2022/05/05 00:29:22, Carte Bancaire, A0004, Sac a dos de randonnée, 5, 50.0, 250.0
+2022/05/05 00:31:08, Carte Bancaire, A0004, Sac a dos de randonnée, 6, 50.0, 300.0
+2022/05/05 00:37:11, Carte Bancaire, A0003, Chaussures de BasketBall, 5, 70.0, 350.0
+2022/05/05 00:50:13, Carte Bancaire, A0001, Kit Pump, 4, 140.0, 560.0
+2022/05/05 00:50:13, Carte Bancaire, A0002, Pantalon Cargo, 6, 70.0, 420.0
+2022/05/05 00:50:13, Carte Bancaire, A0003, Chaussures de BasketBall, 8, 70.0, 560.0

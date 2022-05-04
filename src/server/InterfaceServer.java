@@ -25,7 +25,7 @@ public class InterfaceServer {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -48,10 +48,10 @@ public class InterfaceServer {
     }
     
     private void rechercher() {
-        table = new JTable();
+        table = new JTable(); 
         table.setBounds(206, 95, 782, 127);
         String s=txtDate.getText();
-        String[] column= {"Date","Reference facture","Mode de paiement","Montant"};
+        String[] column= {"Reference facture", "Date", "Mode de paiement","Montant"};
         
         try {
             table = new javax.swing.JTable((String[][])g.getFactures(s),column);

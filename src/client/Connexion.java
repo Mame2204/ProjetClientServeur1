@@ -104,7 +104,7 @@ public class Connexion {
 	                    	cli.setId(rs.getInt(1));
 	                    	cli.setPseudo(userName);
 	                    	cli.setMdp(password);
-	                    	InterfaceClient ic = new InterfaceClient(cli);
+	                    	//InterfaceClient ic = new InterfaceClient(cli);
 	                    	frame.dispose();
 	                        JOptionPane.showMessageDialog(btnConnexion, "You have successfully logged in");
 	                    } else {

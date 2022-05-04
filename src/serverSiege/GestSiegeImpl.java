@@ -1,10 +1,20 @@
 package serverSiege;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import client.Achat;
+import server.Article;
+import server.GestionImpl;
+import server.IGestion;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +24,11 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
     private static final long serialVersionUID = 1L;
     private Connection con;
     private Statement stmt;
+    private Statement stmt1;
     private PreparedStatement pstmt;
     private int numUpd;
-
+    
+    
     public GestSiegeImpl() throws RemoteException {
         super();
         try {
@@ -24,13 +36,14 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
             try {
                 con = DriverManager.getConnection("jdbc:mysql://localhost:8889/gestion","root","root");
                 stmt=con.createStatement();
-                System.out.println("Connected");
+                System.out.println("Connected Siege");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        
     }
 
     
@@ -185,6 +198,92 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
             
     return CA;
 }
+    
+    @Override
+    public int getReference() {
+        int ref=0;
+        try {
+            stmt = con.createStatement();
+            String sql ="SELECT max(ref) from facture";
+              ResultSet rs = stmt.executeQuery(sql); 
+                  while(rs.next())  {
+                      ref=rs.getInt(1);
+
+                  }
+                  rs.close();
+                  stmt.close();
+             
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }   
+        return ref;   
+    }
+    
+
+    @Override
+    public boolean createFactureS(ArrayList<Article> listeArticles) throws RemoteException {
+        
+        try {
+            double montant=0.0;
+            String s="";
+            
+            stmt = con.createStatement();
+            String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+            
+            for(int i=0; i<listeArticles.size();i++) {
+                Article a = (Article)listeArticles.get(i);
+                montant = montant+a.getPrix()*a.getNbStock();
+                s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
+                 
+            }
+            String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        return true;     
+    }
+    
+    @Override
+    public boolean createFactureArticleS(ArrayList<Article> listeArticles) throws RemoteException {
+        try {
+            stmt1 = con.createStatement();
+            for(int i=0; i<listeArticles.size();i++) {
+                Article a = (Article)listeArticles.get(i);
+                int ref=getReference(); 
+                String sql1 = "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.getNbStock()+")"; 
+                stmt1.executeUpdate(sql1);
+            }
+            stmt1.close();
+            return true; 
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        return false;     
+    }
+    
+    @Override
+    public boolean MiseAJour() throws RemoteException {
+        try {
+            stmt = con.createStatement();
+            System.out.print("test");
+            String sql = "UPDATE article set prix = prix + 10 ";
+            
+            stmt.executeUpdate(sql);
+            stmt.close(); 
+            return true;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
     
    }
 
