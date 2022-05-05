@@ -5,17 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -28,10 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import server.Article;
-import server.GestionImpl;
 import server.IGestion;
-import serverSiege.GestSiegeImpl;
-import serverSiege.IGestSiege;
 
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
@@ -46,9 +37,7 @@ public class Achat {
 	private JTextField txtRef;
 	private JTextField txtFamille;
 	private JTextField txtPrix;
-	private JTextField txtQuantite;
 	private IGestion g;
-	private IGestSiege gs;
 	private double montant;
 	static  ArrayList<Article> listeArticles = new ArrayList<Article>();
 	
@@ -97,38 +86,133 @@ public class Achat {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 946, 593);
+		frame.getContentPane().setBackground(Color.decode("#85929E"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		this.montant=0.0;
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		menuBar.setBackground(Color.CYAN);
-		menuBar.setBounds(0, 0, 1191, 47);
-		frame.getContentPane().add(menuBar);
-		
-		JMenu mnAccueil = new JMenu("Accueil");
-		menuBar.add(mnAccueil);
-		
-		JMenu mnCaisse = new JMenu("Caisse");
-		menuBar.add(mnCaisse);
-		
-		JMenuItem mntmAcheter = new JMenuItem("Achat");
-		mnCaisse.add(mntmAcheter);
-		mntmAcheter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+        menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        menuBar.setBackground(Color.CYAN);
+        menuBar.setBounds(0, 0, 1191, 47);
+        frame.getContentPane().add(menuBar);
+        
+        JMenu mnAccueil = new JMenu("Accueil");
+        JMenuItem mntmAccueil = new JMenuItem("Retour Accueil");
+        mnAccueil.add(mntmAccueil);
+        mntmAccueil.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InterfaceClient home=new InterfaceClient();
+            }
+        });
+        menuBar.add(mnAccueil);
+        
+        
+        JMenu mnCaisse = new JMenu("Caisse");
+        menuBar.add(mnCaisse);
+        
+        JMenuItem mntmAcheter = new JMenuItem("Acheter");
+        mnCaisse.add(mntmAcheter);
+        mntmAcheter.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Achat achat=new Achat();
+                frame.setVisible(false);
+            }
+        });
+        
+        JMenu mnStock = new JMenu("Gestion");
+        menuBar.add(mnStock);
+        JMenuItem mntmStock = new JMenuItem("Ajout de stock");
+        mnStock.add(mntmStock);
+        mntmStock.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ModifierArticle mdifArt=new ModifierArticle();
+                frame.setVisible(false);
+            }
+        });
+        
+        
+        JMenuItem mntmMiseJour = new JMenuItem("Mise \u00E0 jour prix");
+        mnStock.add(mntmMiseJour);
+        mntmMiseJour.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    g.MiseAJour();
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                InterfaceClient home=new InterfaceClient();
+                frame.setVisible(false);
+            }
+        });
+        
+        
+        
+        JMenu mnFacture = new JMenu("Facture");
+        menuBar.add(mnFacture);
+
+        JMenuItem mntmConsultationFacture = new JMenuItem("Consultation facture");
+        mnFacture.add(mntmConsultationFacture);
+        mntmConsultationFacture.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Consult_Facture consultFacture = new Consult_Facture();
+                frame.setVisible(false);
+            }
+        });
+        
+        JMenu mnQuit = new JMenu("Quitter");
+        mnQuit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
+                if(reponse==JOptionPane.YES_OPTION) {
+                    System.exit(0);;
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+        menuBar.add(mnQuit);
 		
 		tlisteArticles = new JTable();
 		tlisteArticles.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"R\u00E9ference", "Famille", "Prix", "Quantit\u00E9"
+				"R\u00E9ference", "Designation", "Prix", "Quantit\u00E9"
 			}
 		));
 		tlisteArticles.setBounds(598, 100, 1, 1);
@@ -160,7 +244,7 @@ public class Achat {
 		btnchercher.setBounds(345, 95, 101, 29);
 		frame.getContentPane().add(btnchercher);
 		
-		JLabel lblNomDeFamille = new JLabel("Nom de famille :");
+		JLabel lblNomDeFamille = new JLabel("Designation :");
 		lblNomDeFamille.setBounds(28, 152, 119, 20);
 		frame.getContentPane().add(lblNomDeFamille);
 		
@@ -200,28 +284,27 @@ public class Achat {
 		        
 		            try {
 		                 table = ((String[][])g.rechArticle(s));
+		                 if (Integer.parseInt(table[0][4]) < (int)spinner.getValue()) {
+		                     JOptionPane.showMessageDialog(null,
+		                             "Pas de stock suffisant pour cet achat",
+		                             "Avertissement",
+		                             JOptionPane.WARNING_MESSAGE);
+		                 } else {
+		                  DefaultTableModel MonModel = (DefaultTableModel)tlisteArticles.getModel();
+		                  MonModel.addRow(new Object[] {txtRef.getText(),txtFamille.getText(),txtPrix.getText(),spinner.getValue()});
+		                  listeArticles.add(new Article(txtRef.getText(),txtFamille.getText(),Double.parseDouble(txtPrix.getText()),(int)spinner.getValue()));
+		                  montant=montant+Double.parseDouble(txtPrix.getText())* (int)spinner.getValue();
+		                  label.setText(String.valueOf(montant));
+		                  txtRef.setText("");
+		                  txtFamille.setText("");
+		                  txtPrix.setText("");
+		                  spinner.setValue(0);
+		                 }
 		            } 
 		            catch (RemoteException e1) {
 		                e1.printStackTrace();
 		            }
-		            if (Integer.parseInt(table[0][3]) < (int)spinner.getValue()) {
-			        JOptionPane.showMessageDialog(null,
-	                        "Pas de stock suffisant pour cet achat",
-	                        "Avertissement",
-	                        JOptionPane.WARNING_MESSAGE);
-			    } else {
-				 DefaultTableModel MonModel = (DefaultTableModel)tlisteArticles.getModel();
-				 MonModel.addRow(new Object[] {txtRef.getText(),txtFamille.getText(),txtPrix.getText(),spinner.getValue()});
-				 listeArticles.add(new Article(txtRef.getText(),txtFamille.getText(),Double.parseDouble(txtPrix.getText()),(int)spinner.getValue()));
-				 montant=montant+Double.parseDouble(txtPrix.getText())* (int)spinner.getValue();
-				 label.setText(String.valueOf(montant));
-				 //System.out.print("taille liste createFactureget: "+getListeArticles().size());
-				 
-				 txtRef.setText("");
-				 txtFamille.setText("");
-				 txtPrix.setText("");
-				 spinner.setValue(0);
-			    }
+		            
 			}
 		});
 		btnAjouter.setBounds(161, 398, 166, 29);
@@ -249,39 +332,32 @@ public class Achat {
 	
 	private void rechercher() {
 		String[][] table = null;
-		//String s=null;
 		String s=txtRef.getText();
-        
 		
     		try {
     			 table = ((String[][])g.rechArticle(s));
+    			 if (table.length == 0) {
+                     JOptionPane.showMessageDialog(null,
+                     "Aucun article ne correspond à cette reference", "Avertissement",
+                     JOptionPane.WARNING_MESSAGE);} 
+               else if (Integer.parseInt(table[0][4]) == 0) {
+                   JOptionPane.showMessageDialog(null,
+                           "Pas de stock necessaire pour cet achat",
+                           "Avertissement",
+                           JOptionPane.WARNING_MESSAGE);
+                   } 
+                   else {
+                       for(int i=0; i<5;i++) {
+                            txtRef.setText(""+table[0][0]); //reference
+                            txtFamille.setText(""+table[0][2]);  //Designation
+                            txtPrix.setText(""+table[0][3]); //prix
+                       }
+                   }
     		} 
     		catch (RemoteException e) {
     			e.printStackTrace();
     		}
-    		
-    		if (table.length == 0) {
-    	          JOptionPane.showMessageDialog(null,
-    	          "Aucun article ne correspond à cette reference", "Avertissement",
-    	          JOptionPane.WARNING_MESSAGE);} 
-    		else if (Integer.parseInt(table[0][3]) == 0) {
-                    //System.out.print("Pas de stock necessaire pour cet achat");
-                JOptionPane.showMessageDialog(null,
-                        "Pas de stock necessaire pour cet achat",
-                        "Avertissement",
-                        JOptionPane.WARNING_MESSAGE);
-                } 
-                else {
-                    
-                    for(int i=0; i<5;i++) {
-                         txtRef.setText(""+table[0][0]);
-                         txtFamille.setText(""+table[0][1]);
-                         txtPrix.setText(""+table[0][2]);
-                    }
-                }
-
-    		
-    	          
+    	    
 	}
 	
 }

@@ -10,7 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.swing.JOptionPane;
+
 import client.Achat;
+import client.Consult_Facture;
 import server.Article;
 import server.GestionImpl;
 import server.IGestion;
@@ -25,8 +28,6 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
     private Connection con;
     private Statement stmt;
     private Statement stmt1;
-    private PreparedStatement pstmt;
-    private int numUpd;
     
     
     public GestSiegeImpl() throws RemoteException {
@@ -59,7 +60,6 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
                 ResultSet rs = stmt.executeQuery(sql);
                 rs.last();
                 rowcount = rs.getRow();
-                //Move to beginning
                 rs.beforeFirst();
                 
                 data = new String[rowcount][4];
@@ -95,26 +95,20 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
         System.out.println("Creating statement..."); 
         try {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String sqll = "SELECT * FROM facture_article where ref_facture = "+r+"";
+            String sqll = "SELECT * FROM facture_article INNER JOIN article ON facture_article.ref_article = article.ref where ref_facture = "+r+"";
             ResultSet rs = stmt.executeQuery(sqll);
 
             rs.last();
             rowcount = rs.getRow();
-            
-            //Move to beginning
             rs.beforeFirst();
             
             data = new String[rowcount][4];
             int i=0;
             while(rs.next()) {
-                      try {
-                        data[i][0]=rs.getString(1);
-                        data[i][1]=rs.getString(2);
-                        data[i][2]=rs.getString(3);
-                        
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                        data[i][0]=rs.getString(2); //reference
+                        data[i][1]= rs.getString(5); //designation
+                        data[i][2]=rs.getString(6); //prix
+                        data[i][3]=rs.getString(3); //nbStock
                   
                   i=i+1;}
               rs.close();
@@ -140,8 +134,6 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
                 
                 rs.last();
                 rowcount = rs.getRow();
-                
-                //Move to beginning
                 rs.beforeFirst();
                 
                 data = new String[rowcount][4];
@@ -222,22 +214,20 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
     
 
     @Override
-    public boolean createFactureS(ArrayList<Article> listeArticles) throws RemoteException {
+    public int createFactureS(ArrayList<Article> listeArticles, String mP) throws RemoteException {
         
         try {
             double montant=0.0;
-            String s="";
-            
             stmt = con.createStatement();
             String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
             
             for(int i=0; i<listeArticles.size();i++) {
                 Article a = (Article)listeArticles.get(i);
                 montant = montant+a.getPrix()*a.getNbStock();
-                s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
                  
             }
-            String sql = "INSERT into facture values(0,'"+dateDuJour+"', 'Carte Bancaire',"+montant+")";
+            System.out.print("TEST "+mP);
+            String sql = "INSERT into facture values(0,'"+dateDuJour+"', '"+mP+"' ,"+montant+")";
             stmt.executeUpdate(sql);
             stmt.close();
             
@@ -245,16 +235,17 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }  
-        return true;     
+        int refFacture=getReference();
+        return refFacture;     
     }
     
     @Override
     public boolean createFactureArticleS(ArrayList<Article> listeArticles) throws RemoteException {
         try {
             stmt1 = con.createStatement();
+            int ref=getReference(); 
             for(int i=0; i<listeArticles.size();i++) {
                 Article a = (Article)listeArticles.get(i);
-                int ref=getReference(); 
                 String sql1 = "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.getNbStock()+")"; 
                 stmt1.executeUpdate(sql1);
             }

@@ -28,7 +28,6 @@ public class Paiement {
 				try {
 					Paiement window = new Paiement();
 					window.frame.setVisible(true);
-					//window.loop();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,6 +49,7 @@ public class Paiement {
 		frame = new JFrame();
 		 
 		frame.setBounds(100, 100, 945, 417);
+		frame.getContentPane().setBackground(Color.decode("#85929E"));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		ButtonGroup bg = new ButtonGroup();
@@ -100,8 +100,6 @@ public class Paiement {
                 frame.setVisible(false);
 			}
 		});
-		
-		
 		
 		rdbtCB.setBounds(361, 117, 155, 29);
 		frame.getContentPane().add(rdbtCB);

@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -49,7 +50,8 @@ public class InterfaceServer {
     
     private void rechercher() {
         table = new JTable(); 
-        table.setBounds(206, 95, 782, 127);
+        table.setBounds(30, 40, 794, 127);
+        
         String s=txtDate.getText();
         String[] column= {"Reference facture", "Date", "Mode de paiement","Montant"};
         
@@ -65,7 +67,7 @@ public class InterfaceServer {
             e.printStackTrace();
         }
         scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(67, 155, 718, 170);
+        scrollPane.setBounds(65, 110, 718, 220);
         frame.getContentPane().add(scrollPane);
         
     }
@@ -81,6 +83,7 @@ public class InterfaceServer {
             e1.printStackTrace();
         }
         frame = new JFrame();
+        frame.getContentPane().setBackground(Color.decode("#85929E"));
         frame.setBounds(100, 100, 944, 543);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
@@ -96,12 +99,12 @@ public class InterfaceServer {
         txtDate.setColumns(10);
         
         table = new JTable();
-        table.setBounds(206, 95, 782, 127);
+        table.setBounds(30, 40, 794, 127);
         String[] column= {"Date","Reference facture","Mode de paiement","Montant"};
         table = new javax.swing.JTable(new String[0][4],column);
          
         scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(67, 155, 718, 170);
+        scrollPane.setBounds(65, 110, 718, 220);
         frame.getContentPane().add(scrollPane);
         
         lblChiffreDaffaires = new JLabel("Chiffre d'affaires :");

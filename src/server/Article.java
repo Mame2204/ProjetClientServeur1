@@ -5,9 +5,10 @@ import java.io.Serializable;
 public class Article implements Serializable {
 	
 	private String reference;
-	private String famille;
+    private String designation;
 	private double prix;
 	private int nbStock;
+	private String famille;
 	
 	public Article(String reference, String famille, double prix, int nbStock) {
 		super();
@@ -34,6 +35,18 @@ public class Article implements Serializable {
 	public void setReference(String reference) {
 		this.reference = reference;
 	}
+	/**
+     * @return the Designation
+     */
+	public String getDesignation() {
+        return designation;
+    }
+    /**
+     * @param famille the Designation to set
+     */
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
 
 	/**
 	 * @return the famille

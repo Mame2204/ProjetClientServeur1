@@ -5,11 +5,17 @@ import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
@@ -72,18 +78,18 @@ public class Consult_Facture {
             e1.printStackTrace();
         }
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+		frame.getContentPane().setBackground(Color.decode("#85929E"));
 		frame.setBounds(100, 100, 952, 554);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblReferenceFacture = new JLabel("Reference facture :");
 		lblReferenceFacture.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblReferenceFacture.setBounds(97, 46, 188, 31);
+		lblReferenceFacture.setBounds(97, 66, 188, 31);
 		frame.getContentPane().add(lblReferenceFacture);
 		
 		txtFacture = new JTextField();
-		txtFacture.setBounds(348, 44, 234, 37);
+		txtFacture.setBounds(348, 64, 234, 37);
 		frame.getContentPane().add(txtFacture);
 		txtFacture.setColumns(10);
 		
@@ -93,7 +99,7 @@ public class Consult_Facture {
 	                rechercher();
 	            }
 	        });
-	        btnChercher.setBounds(627, 44, 115, 37);
+	        btnChercher.setBounds(627, 64, 115, 37);
 	        frame.getContentPane().add(btnChercher);
 		
 		JLabel lblDate = new JLabel("Date :");
@@ -109,7 +115,7 @@ public class Consult_Facture {
 		
 		table = new JTable();
 		table.setBounds(130, 135, 1, 1);
-		String[] column= {"Reference","Famille","Quantite","Prix","Montant"};
+		String[] column= {"Reference","Designation","Quantite","Prix","Montant"};
 		 
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(70, 191, 767, 230);
@@ -132,6 +138,122 @@ public class Consult_Facture {
 		lblCarteBanquaire.setBounds(670, 134, 142, 20); 
 		frame.getContentPane().add(lblCarteBanquaire);
 		
+		JMenuBar menuBar = new JMenuBar();
+        menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        menuBar.setBackground(Color.CYAN);
+        menuBar.setBounds(0, 0, 1191, 47);
+        frame.getContentPane().add(menuBar);
+        
+        JMenu mnAccueil = new JMenu("Accueil");
+        JMenuItem mntmAccueil = new JMenuItem("Retour Accueil");
+        mnAccueil.add(mntmAccueil);
+        mntmAccueil.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InterfaceClient home=new InterfaceClient();
+            }
+        });
+        menuBar.add(mnAccueil);
+        
+        
+        JMenu mnCaisse = new JMenu("Caisse");
+        menuBar.add(mnCaisse);
+        
+        JMenuItem mntmAcheter = new JMenuItem("Acheter");
+        mnCaisse.add(mntmAcheter);
+        mntmAcheter.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Achat achat=new Achat();
+                frame.setVisible(false);
+            }
+        });
+        
+        JMenu mnStock = new JMenu("Gestion");
+        menuBar.add(mnStock);
+        JMenuItem mntmStock = new JMenuItem("Ajout de stock");
+        mnStock.add(mntmStock);
+        mntmStock.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ModifierArticle mdifArt=new ModifierArticle();
+                frame.setVisible(false);
+            }
+        });
+        
+        
+        JMenuItem mntmMiseJour = new JMenuItem("Mise \u00E0 jour prix");
+        mnStock.add(mntmMiseJour);
+        mntmMiseJour.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    g.MiseAJour();
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                InterfaceClient home=new InterfaceClient();
+                frame.setVisible(false);
+            }
+        });
+        
+        
+        
+        JMenu mnFacture = new JMenu("Facture");
+        menuBar.add(mnFacture);
+
+        JMenuItem mntmConsultationFacture = new JMenuItem("Consultation facture");
+        mnFacture.add(mntmConsultationFacture);
+        mntmConsultationFacture.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Consult_Facture consultFacture = new Consult_Facture();
+                frame.setVisible(false);
+            }
+        });
+        
+        JMenu mnQuit = new JMenu("Quitter");
+        mnQuit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
+                if(reponse==JOptionPane.YES_OPTION) {
+                    System.exit(0);;
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+        menuBar.add(mnQuit);
+		
 		frame.setVisible(true);
 	}
 	private void rechercher() {
@@ -139,25 +261,30 @@ public class Consult_Facture {
 
         table.setBounds(130, 135, 1, 1);
         String s=txtFacture.getText();
-        String[] column= {"Reference","Famille","Prix","Quantite","Montant"};
-        
+        String[] column= {"Reference","Designation","Prix","Quantite","Montant"};
+          
         try {
-            table = new javax.swing.JTable((String[][])g.TrouveArticlesFacture(Integer.parseInt(s)),column);
+            Integer.parseInt(s);
             detailsFact=g.TrouveFacture(Integer.parseInt(s));
-            
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            table = new javax.swing.JTable((String[][])g.TrouveArticlesFacture(Integer.parseInt(s)),column);
+            lblDatefac.setText(""+detailsFact[0][1]);
+            lblCarteBanquaire.setText(""+detailsFact[0][2]);
+            lblMontant.setText(""+detailsFact[0][3]+" €");
+            scrollPane = new JScrollPane(table);
+            scrollPane.setBounds(70, 191, 767, 230);
+            frame.getContentPane().add(scrollPane);
+            frame.setVisible(true);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Aucune facture ne correspond à cette reference", "Avertissement",
+                    JOptionPane.WARNING_MESSAGE);
+                    Consult_Facture cf=new Consult_Facture();
         }
-        lblDatefac.setText(""+detailsFact[0][1]);
-        lblCarteBanquaire.setText(""+detailsFact[0][2]);
-        lblMontant.setText(""+detailsFact[0][3]+" €");
-        scrollPane = new JScrollPane(table);
-        //scrollPane.setBounds(67, 155, 718, 170);
-        scrollPane.setBounds(70, 191, 767, 230);
-        frame.getContentPane().add(scrollPane);
         
-        frame.setVisible(true);
+        
         
     }
 
 }
+

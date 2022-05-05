@@ -39,18 +39,7 @@ public class PaiementCB extends Achat{
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
-    private IGestion g;
-    
-    static  ArrayList<Article> listeArticlesFacture = new ArrayList<Article>();
-    
-    public static ArrayList<Article> getListeArticlesFacture() {
-            return listeArticlesFacture;
-        }
-    
-    public static void setListeArticlesFacture(ArrayList<Article> listeArticlesFacture) {
-        PaiementCB.listeArticlesFacture = listeArticlesFacture;
-    }
-    
+    private IGestion g;    
 
     /**
      * Launch the application.
@@ -85,10 +74,9 @@ public class PaiementCB extends Achat{
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        //System.out.print("taille liste CreateFActure : "+Achat.getListeArticles().size());
         frame = new JFrame();
-        frame.getContentPane().setBackground(Color.WHITE);
         frame.setBounds(100, 100, 976, 584);
+        frame.getContentPane().setBackground(Color.decode("#85929E"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
         
@@ -141,17 +129,20 @@ public class PaiementCB extends Achat{
         JButton btnPayer = new JButton("Payer");
         btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                String mP="Carte Bancaire";
                 try {
                     
-                    g.createFacture(Achat.getListeArticles());
+                    int refFacture=g.createFacture(Achat.getListeArticles(), mP);
+                    
                     g.createFactureArticle(Achat.getListeArticles());
-                    ecrireTicketDeCaisse();
+                    System.out.print("TEST ref fact "+refFacture);
+                    ecrireTicketDeCaisse(refFacture);
+                    InterfaceClient ic=new InterfaceClient();
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 
-                InterfaceClient ic=new InterfaceClient();
                 frame.setVisible(false);
             }
         });
@@ -179,30 +170,31 @@ public class PaiementCB extends Achat{
         frame.setVisible(true);
     }
     
-    public void ecrireTicketDeCaisse() {
-        Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
-        
+    public void ecrireTicketDeCaisse(int refFacture) {
+        Path chemin = Paths.get("././Ticket_De_Caisse/Facturation.csv");
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);
                 String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                String s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
+                String s = dateDuJour +","+refFacture+", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n";
                 try {
-                    g.setArticle1(a); 
+                    g.setArticle(a); 
                 } catch (RemoteException e1) {
                     e1.printStackTrace();
                 }
                 byte[] data = s.getBytes();
                 OutputStream output = null; 
-                try { 
+                try {
                     output = new BufferedOutputStream(Files.newOutputStream(chemin, StandardOpenOption.APPEND)); 
                     output.write(data);
                     output.flush();
                     output.close();
                 } 
                 catch (Exception e) { System.out.println("Message " + e); }
-                
        }
-        Achat.setListeArticles(new ArrayList<Article>() );
-
+        Achat.setListeArticles(new ArrayList<Article>());
     }
 }
+
+
+
+

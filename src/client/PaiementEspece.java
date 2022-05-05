@@ -34,15 +34,6 @@ public class PaiementEspece {
 	private JFrame frame;
 	private IGestion g;
 	
-	static  ArrayList<Article> listeArticlesFacture = new ArrayList<Article>();
-    
-    public static ArrayList<Article> getListeArticlesFacture() {
-            return listeArticlesFacture;
-        }
-    
-    public static void setListeArticlesFacture(ArrayList<Article> listeArticlesFacture) {
-        PaiementCB.listeArticlesFacture = listeArticlesFacture;
-    }
 
 	/**
 	 * Launch the application.
@@ -78,7 +69,7 @@ public class PaiementEspece {
             e1.printStackTrace();
         }
 		frame = new JFrame();
-		frame.getContentPane().setBackground(Color.WHITE);
+		frame.getContentPane().setBackground(Color.decode("#85929E"));
 		frame.setBounds(100, 100, 1014, 596);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -101,16 +92,17 @@ public class PaiementEspece {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                String mP="Espece";
                 try {
-                    g.createFacture(Achat.getListeArticles());
+                    int refFacture=g.createFacture(Achat.getListeArticles(), mP);
                     g.createFactureArticle(Achat.getListeArticles());
-                    ecrireTicketDeCaisse();
+                    ecrireTicketDeCaisse(refFacture);
+                    InterfaceClient ic=new InterfaceClient();
                 } catch (RemoteException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                InterfaceClient ic=new InterfaceClient();
+                
                 frame.setVisible(false);
             }
         });
@@ -120,17 +112,14 @@ public class PaiementEspece {
 	}
 	
 	
-	public void ecrireTicketDeCaisse() {
-        Path chemin = Paths.get("/Users/mariamekaba/eclipse-workspace/ProjetClientServeur1/Ticket_De_Caisse/Facturation.csv");
-
-	    //System.out.print(Achat.getListeArticles().size());
-        PaiementEspece.setListeArticlesFacture(Achat.getListeArticles());
+	public void ecrireTicketDeCaisse(int refFacture) {
+        Path chemin = Paths.get("././Ticket_De_Caisse/Facturation.csv");
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);
                 String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                String s = dateDuJour +", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; //qte achete et  non stock
+                String s = dateDuJour +","+refFacture+", Espece, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n"; 
                 try {
-                    g.setArticle1(a); 
+                    g.setArticle(a); 
                 } catch (RemoteException e1) {
                     // TODO Auto-generated catch block 
                     e1.printStackTrace();

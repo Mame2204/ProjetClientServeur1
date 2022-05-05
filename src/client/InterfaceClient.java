@@ -25,6 +25,8 @@ import server.GestionImpl;
 import server.IGestion;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.awt.event.ActionEvent;
@@ -41,7 +43,6 @@ public class InterfaceClient {
 	JTable table;
 	private JScrollPane scrollPane;
 	private IGestion g;
-	private UnClient client;
 	JLabel bienvenue;
 
 	/**
@@ -64,18 +65,14 @@ public class InterfaceClient {
 	 * Create the application.
 	 */
 	public InterfaceClient() {
-		//this.client=new UnClient();
 		initialize();
 	}
 	
-    /*
-     * public InterfaceClient(UnClient c) { this.client=c; initialize(); }
-     */
 	
 	private void rechercher() {
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
+		String[] column= {"R\u00E9ference" ,"Famille","Description","Prix","Stock"};
 		String s=txtSearch.getText();
 		try {
 			table = new javax.swing.JTable((String[][])g.getArticle(s),column);
@@ -102,21 +99,19 @@ public class InterfaceClient {
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 16));
 		frame.setBounds(100, 100, 1213, 608);
+		frame.getContentPane().setBackground(Color.decode("#85929E")); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(291, 93, 744, 39);
+		panel.setBounds(232, 93, 744, 39);
 		panel.setToolTipText("");
 		frame.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		bienvenue = new JLabel("Bienvenue");
 		bienvenue.setBounds(10, 63, 69, 20);
-        /*
-         * if(client.getPseudo()!=null) { bienvenue.setText("Bienvenue "
-         * +client.getPseudo()); }
-         */
+        
 		frame.getContentPane().add(bienvenue);
 		
 		JLabel search = new JLabel("Rechercher:");
@@ -142,8 +137,9 @@ public class InterfaceClient {
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				table = new JTable();
+				txtSearch.setText("");
 				table.setBounds(206, 95, 782, 127);
-				String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
+				String[] column= {"R\u00E9ference" ,"Famille","Description","Prix","Stock"};
 				try {
 					table = new javax.swing.JTable((String[][])g.getArticles(),column);
 				} catch (RemoteException e) {
@@ -158,7 +154,7 @@ public class InterfaceClient {
 		
 		table = new JTable();
 		table.setBounds(206, 95, 782, 127);
-		String[] column= {"R\u00E9ference","Famille","Prix","Stock"};
+		String[] column= {"R\u00E9ference" ,"Famille","Description","Prix","Stock"};
 		try {
 			table = new javax.swing.JTable((String[][])g.getArticles(),column);
 		} catch (RemoteException e) {
@@ -168,23 +164,6 @@ public class InterfaceClient {
 	    scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(240, 164, 718, 350);
 		frame.getContentPane().add(scrollPane);
-		
-		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Component frame = null;
-				//Test frame=new Test();
-				int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
-				if(reponse==JOptionPane.YES_OPTION) {
-					System.exit(0);;
-				}
-				btnExit.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnExit.setBounds(450, 530, 115, 29); //313
-			}
-		});
-		btnExit.setBounds(450, 530, 115, 29);
-		frame.getContentPane().add(btnExit);
-		
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -265,6 +244,42 @@ public class InterfaceClient {
                 frame.setVisible(false);
             }
         });
+        
+        JMenu mnQuit = new JMenu("Quitter");
+        mnQuit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int reponse=JOptionPane.showConfirmDialog(frame, "Voulez-vous vraiment quitter ?", "confirm", JOptionPane.YES_NO_OPTION );
+                if(reponse==JOptionPane.YES_OPTION) {
+                    System.exit(0);;
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+        menuBar.add(mnQuit);
 		
          frame.setVisible(true);
 	}
