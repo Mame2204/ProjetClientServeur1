@@ -1,6 +1,6 @@
 Date de la facturation, Reference Facture, Mode de payement, Reference Article, Description, Quantité, Prix, Montant
-2022/05/05 23:29:23, 107, Carte Bancaire, A0001, Kit Pump, 3, 220.0, 660.0
-2022/05/05 23:29:23, 107, Carte Bancaire, A0002, Pantalon Cargo, 2, 150.0, 300.0
+2022/05/05 23:29:23,107, Carte Bancaire, A0001, Kit Pump, 3, 220.0, 660.0
+2022/05/05 23:29:23,107, Carte Bancaire, A0002, Pantalon Cargo, 2, 150.0, 300.0
 2022/05/05 23:56:46,107, Carte Cheque, A0001, Kit Pump, 3, 220.0, 660.0
 2022/05/05 23:57:01,107, Carte Bancaire, A0003, Chaussures de BasketBall, 4, 150.0, 600.0
 2022/05/05 23:57:46,107, Carte Cheque, A0008, Bottes de neige, 4, 135.0, 540.0
@@ -30,3 +30,4 @@ Date de la facturation, Reference Facture, Mode de payement, Reference Article, 
 2022/05/07 19:38:20,122, Espece, A0002, Pantalon Cargo, 2, 150.0, 300.0
 2022/05/07 19:44:29,123, Carte Bancaire, A0001, Kit Pump, 12, 230.0, 2760.0
 2022/05/07 19:44:29,123, Carte Bancaire, A0002, Pantalon Cargo, 4, 160.0, 640.0
+2022/05/08 22:51:31,124, Carte Bancaire, A0010, Roller Fitness, 2, 175.0, 350.0

@@ -1,5 +1,8 @@
 package serverSiege;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -9,6 +12,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
@@ -214,36 +219,86 @@ public class GestSiegeImpl extends UnicastRemoteObject implements IGestSiege {
     
 
     @Override
-    public int createFactureS(ArrayList<Article> listeArticles, String mP) throws RemoteException {
-        
+    public void createFacture() throws RemoteException {
+        String[][] factures=lireTicketDeCaisse();
+        int refDebut=getReference()+1;
+        double montant=0.0;
         try {
-            double montant=0.0;
-            stmt = con.createStatement();
-            String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-            
-            for(int i=0; i<listeArticles.size();i++) {
-                Article a = (Article)listeArticles.get(i);
-                montant = montant+a.getPrix()*a.getNbStock();
-                 
+        
+        for(int i=1; i<factures.length;i++) {
+            if ( Integer.parseInt(factures[i][1].trim()) == refDebut) {
+                int j=i;
+                    while((j < factures.length) && (Integer.parseInt(factures[i][1].trim()) == Integer.parseInt(factures[j][1].trim()))) {
+                        montant = montant+Double.parseDouble(factures[j][7].trim());
+                        j++;
+                        
+                }
+                    i=j-1;
+                    stmt = con.createStatement();
+                    String sql = "INSERT into facture values("+factures[i][1].trim()+",'"+factures[i][0].trim()+"', '"+factures[i][2].trim()+"' ,"+montant+")";
+                    stmt.executeUpdate(sql);
+                    stmt.close();
             }
-            System.out.print("TEST "+mP);
-            String sql = "INSERT into facture values(0,'"+dateDuJour+"', '"+mP+"' ,"+montant+")";
-            stmt.executeUpdate(sql);
-            stmt.close();
             
+        }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }  
-        int refFacture=getReference();
-        return refFacture;     
+            
+    }
+    
+    public String[][] lireTicketDeCaisse() {
+        String[][] facture = null;//new String[9];
+        FileReader fr = null;
+        int count = 0;
+        try
+        {
+            File file = new File("Facturation.csv");
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNextLine()) {
+              sc.nextLine();
+              count++;
+            }
+            
+            facture=new String[count][8];
+            fr = new FileReader(file);
+            BufferedReader bfr =new BufferedReader(fr);
+            String line = null;
+            int row = 0;
+            
+            
+            //read each line of text file
+            while((line = bfr.readLine()) != null)
+            {
+                int col = 0;
+                StringTokenizer stk = new StringTokenizer(line,",");
+                while (stk.hasMoreTokens())
+                {
+                    //get next token and store it in the array
+                    facture[row][col] = stk.nextToken();
+                    col++;
+                }
+                row++;
+            }
+            
+            //close the file
+            bfr.close();
+            System.out.print(facture[1]);
+            
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return(facture);
     }
     
     @Override
-    public boolean createFactureArticleS(ArrayList<Article> listeArticles) throws RemoteException {
+    public boolean createFactureArticle(ArrayList<Article> listeArticles, int ref) throws RemoteException {
         try {
             stmt1 = con.createStatement();
-            int ref=getReference(); 
+            //int ref=getReference(); 
             for(int i=0; i<listeArticles.size();i++) {
                 Article a = (Article)listeArticles.get(i);
                 String sql1 = "INSERT into facture_article values("+ref+",'"+a.getReference()+"',"+a.getNbStock()+")"; 

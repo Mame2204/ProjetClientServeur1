@@ -21,6 +21,7 @@ import java.awt.Component;
 
 import javax.swing.table.DefaultTableModel;
 
+import server.CA;
 import server.GestionImpl;
 import server.IGestion;
 
@@ -175,7 +176,6 @@ public class InterfaceClient {
 		JMenuItem mntmAccueil = new JMenuItem("Retour Accueil");
 		mnAccueil.add(mntmAccueil);
 		mntmAccueil.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				InterfaceClient home=new InterfaceClient();
@@ -190,7 +190,6 @@ public class InterfaceClient {
 		JMenuItem mntmAcheter = new JMenuItem("Acheter");
 		mnCaisse.add(mntmAcheter);
 		mntmAcheter.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Achat achat=new Achat();
@@ -229,7 +228,16 @@ public class InterfaceClient {
             }
         });
         
-        
+        JMenuItem mntmCa = new JMenuItem("Chiffre d'affaire");
+        mnStock.add(mntmCa);
+        mntmCa.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InterfaceCA ca=new InterfaceCA();
+                frame.setVisible(false); 
+            }
+        });
         
         JMenu mnFacture = new JMenu("Facture");
         menuBar.add(mnFacture);
@@ -241,7 +249,23 @@ public class InterfaceClient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Consult_Facture consultFacture = new Consult_Facture();
+                
                 frame.setVisible(false);
+            }
+        });
+        
+        JMenuItem mntmChargementFacture = new JMenuItem("Chargement facture");
+        mnFacture.add(mntmChargementFacture);
+        mntmChargementFacture.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    g.createFacture();
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
         
@@ -280,7 +304,7 @@ public class InterfaceClient {
             }
         });
         menuBar.add(mnQuit);
-		
+        
          frame.setVisible(true);
 	}
 }

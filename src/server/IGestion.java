@@ -20,11 +20,15 @@ public interface IGestion extends Remote{
     
     public void  MiseAJour() throws RemoteException;
 
-    public boolean createFactureArticle(ArrayList<Article> listeArticles) throws RemoteException;
+    public boolean createFactureArticle(ArrayList<Article> listeArticles, int ref) throws RemoteException;
 
-    public int createFacture(ArrayList<Article> listeArticles, String mP) throws RemoteException;
+    public void createFacture() throws RemoteException;
 
     public boolean setArticle1(Article a) throws RemoteException;
+
+    public String[][] getFactures(String r) throws RemoteException;
+
+    public int getCA(String r) throws RemoteException;
 
 	
 }

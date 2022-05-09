@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import server.Article;
-import server.GestionImpl;
+//import server.GestionImpl;
 import server.IGestion;
 
 import java.awt.Font;
@@ -18,7 +18,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +33,7 @@ import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -132,11 +138,12 @@ public class PaiementCB extends Achat{
                 String mP="Carte Bancaire";
                 try {
                     
-                    int refFacture=g.createFacture(Achat.getListeArticles(), mP);
-                    
-                    g.createFactureArticle(Achat.getListeArticles());
-                    System.out.print("TEST ref fact "+refFacture);
-                    ecrireTicketDeCaisse(refFacture);
+                   //int refFacture=g.createFacture(Achat.getListeArticles(), mP);
+                    int refLastFact=lireDernierEnregFile()+1;
+                    //System.out.println("Ref facture en cours "+refLastFact);
+                    g.createFactureArticle(Achat.getListeArticles(), refLastFact);
+                    //System.out.print("TEST ref fact "+refFacture);
+                    ecrireTicketDeCaisse(refLastFact);
                     InterfaceClient ic=new InterfaceClient();
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
@@ -170,12 +177,13 @@ public class PaiementCB extends Achat{
         frame.setVisible(true);
     }
     
-    public void ecrireTicketDeCaisse(int refFacture) {
-        Path chemin = Paths.get("././Ticket_De_Caisse/Facturation.csv");
+    public void ecrireTicketDeCaisse(int refLastFact) {
+        //Path chemin = Paths.get("././Ticket_De_Caisse/Facturation.csv");
+        Path chemin = Paths.get("Facturation.csv");
         for(int i=0; i<Achat.getListeArticles().size();i++) {
             Article a = (Article)Achat.getListeArticles().get(i);
                 String dateDuJour = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-                String s = dateDuJour +","+refFacture+", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n";
+                String s = dateDuJour +","+refLastFact+", Carte Bancaire, "+a.getReference()+", "+ a.getFamille()+", "+a.getNbStock()+", "+a.getPrix() +", "+a.getPrix()*a.getNbStock() +"\n";
                 try {
                     g.setArticle(a); 
                 } catch (RemoteException e1) {
@@ -193,6 +201,45 @@ public class PaiementCB extends Achat{
        }
         Achat.setListeArticles(new ArrayList<Article>());
     }
+    
+    public int lireDernierEnregFile() {
+        String[] facture = new String[9];
+        FileReader fr = null;
+        try
+        {
+            //PrintStream l_out = new PrintStream(new FileOutputStream("exemple.csv",true));
+            File file = new File("Facturation.csv");
+            fr = new FileReader(file);
+            BufferedReader bfr =new BufferedReader(fr);
+            String line = null;
+            //int row = 0;
+            
+            
+            //read each line of text file
+            while((line = bfr.readLine()) != null)
+            {
+                int col = 0;
+                StringTokenizer stk = new StringTokenizer(line,",");
+                while (stk.hasMoreTokens())
+                {
+                    //get next token and store it in the array
+                    facture[col] = stk.nextToken();
+                    col++;
+                }
+                //row++;
+            }
+            
+            //close the file
+            bfr.close();
+            System.out.print(facture[1]);
+            return Integer.parseInt(facture[1]);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
 }
 
 

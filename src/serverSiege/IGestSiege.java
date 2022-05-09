@@ -16,9 +16,9 @@ public interface IGestSiege extends Remote{
     
     public String[][] getFactureArticle(int r) throws RemoteException;
     
-    public boolean createFactureArticleS(ArrayList<Article> listeArticles) throws RemoteException;
+    public boolean createFactureArticle(ArrayList<Article> listeArticles, int ref) throws RemoteException;
     
-    public int createFactureS(ArrayList<Article> listeArticles, String mP) throws RemoteException;
+    public void createFacture() throws RemoteException;
     
     public int getReference() throws RemoteException;
     

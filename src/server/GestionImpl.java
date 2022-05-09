@@ -194,15 +194,19 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     }
     
     @Override
-    public int createFacture(ArrayList<Article> listeArticles, String mP) throws RemoteException {
-        int refFacture=gs.createFactureS(listeArticles, mP);
-        
-        return refFacture;     
+    public void createFacture() {
+        try {
+            gs.createFacture();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+          
     }
     
     @Override
-    public boolean createFactureArticle(ArrayList<Article> listeArticles) throws RemoteException {
-        gs.createFactureArticleS(listeArticles);
+    public boolean createFactureArticle(ArrayList<Article> listeArticles, int ref) throws RemoteException {
+        gs.createFactureArticle(listeArticles, ref);
         return true;    
     }
 
@@ -259,6 +263,18 @@ public class GestionImpl extends UnicastRemoteObject implements IGestion {
     public void MiseAJour() throws RemoteException {
         gs.MiseAJour();
 
+    }
+    
+    @Override
+    public String[][] getFactures (String r) throws RemoteException {
+        String[][] factures= gs.getFactures (r);
+        return factures;
+    }
+    
+    @Override
+    public int getCA (String r) throws RemoteException {
+        int ca=gs.getCA(r);
+        return ca;
     }
  
 

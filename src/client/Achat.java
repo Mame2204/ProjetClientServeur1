@@ -171,6 +171,40 @@ public class Achat {
             }
         });
         
+        JMenu mnLoadF = new JMenu("Quitter");
+        mnLoadF.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+        menuBar.add(mnLoadF);
+        
+        
         JMenu mnQuit = new JMenu("Quitter");
         mnQuit.addMouseListener(new MouseListener() {
             @Override
@@ -313,8 +347,8 @@ public class Achat {
 		JButton btnPayer = new JButton("Payer");
 		btnPayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    frame.setVisible(false);
 				Paiement p=new Paiement();
+				frame.setVisible(false);
 				
 			}
 		});
